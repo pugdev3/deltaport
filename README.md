@@ -1,5 +1,8 @@
 # Unofficial DELTARUNE Linux port
 
+> [!WARNING]
+> v1 is deprecated. Please switch to the [main](https://github.com/pugdev3/deltaport/tree/main) branch.
+
 This is an unofficial port of DELTARUNE for Linux, currently for Chapters 1, 2, 3 & 4
 
 You need a valid copy of the game, as this dosen't include any game data
