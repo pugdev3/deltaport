@@ -45,7 +45,7 @@ if [ -f "$CHAPTER3_FILE" ]; then
 fi
 
 if [ -f "$CHAPTER4_FILE" ]; then
-	rm $CHAPTER5_FILE
+	rm $CHAPTER4_FILE
 fi
 
 if [ -f "$CHAPTER4_FILE" ]; then

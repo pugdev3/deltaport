@@ -114,10 +114,10 @@ function port_game() {
    cd "$SCRIPTDIR"
 
    log "Patching game data..."
-    hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
-    for ((i = 1 ; i <= CHAPTERS ; i++)); do
+   hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
+   for ((i = 1 ; i <= CHAPTERS ; i++)); do
          hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/v$VERSION/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
-    done
+   done
 
    echo -e "\e[1;32m SUCCESS! The port script finished. \e[0m"
    log 'To play DELTARUNE, go to Steam -> DELTARUNE -> Properties -> Launch Options -> Put this: "./DELTARUNE.sh" -- %command%'
