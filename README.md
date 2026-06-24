@@ -1,10 +1,10 @@
 # deltaport
-<img width="160rem" alt="deltaport logo" src=".github/deltaport.png" />
+<img width="160rem" alt="deltaport logo" src=".github/deltaport.png" />[^1]
 
 > [!NOTE]
 > This project is NOT affiliated with nor endorsed by Toby Fox, Fangamer, YoYo Games Ltd or Opera Norway AS.
 
-An unofficial (attempt) of porting DELTARUNE to Linux
+An unofficial (attempt) of porting DELTARUNE[^2] to Linux
 
 This was originally made as a learning project for personal use, the game works perfectly fine under Proton and you should probably be using that instead.
 
@@ -12,7 +12,7 @@ This doesn't include any game data, you will need to own a copy of the game.
 
 ## Usage
 > [!IMPORTANT]
-> Currently you need version **1.05** to use this script, on Steam, go to `DELTARUNE -> Properties -> Game Versions & Betas -> deltarune105`
+> Currently you need version **1.05** or **1.04** to use this script!
  
 Download the latest release, and double-click `port.sh` or run in your terminal:
 
@@ -37,13 +37,17 @@ After opening, click the Console tab:
 
 <img width="617" height="72" alt="steam with console tab" src="https://github.com/user-attachments/assets/cf77220e-773c-4436-87b3-4e9664665c00" />
 
-Now, go to [here](https://steamdb.info/depot/1671212/manifests/) on SteamDB, you should find a list of manifests (versions) sorted by upload date, choose the one that applies and click copy.
+Now, go to [here](https://steamdb.info/depot/1671212/manifests/) on SteamDB, you should find a list of manifests (versions) sorted by upload date, choose the one that applies
+
+<img width="378" height="54" alt="steamdb with two copy formats" src="https://github.com/user-attachments/assets/6e3eb9c4-9109-433c-bd57-6489c2ed564b" />
+
+Make sure the copy format is: `Steam console` and click copy.
 
 Back on Steam, type `download_depot` and paste what you copied, it should look like this:
 
-<img width="800em" alt="steam window on console tab with download_depot command" src="https://github.com/user-attachments/assets/c77469a4-c370-48ed-a551-c7b438772b40" />
+<img width="800em" alt="steam window on console tab with download_depot command" src="https://github.com/user-attachments/assets/09828c1f-e84f-4622-9bf0-0bec4b70c16c" />
 
-Remove the text (highlighted part) after `download_depot` so that its just numbers (not necessary in the end if its a beta) and hit enter, it should start downloading the depot.
+After this, hit enter, it should start downloading the depot.
 
 <img width="800em" alt="steam console window with dolphin file manager" src="https://github.com/user-attachments/assets/877b55cf-2a35-41f3-bd35-4b6c89686200" />
 
@@ -59,9 +63,10 @@ As GameMaker: Studio exports game code as bytecode instead of native code, we're
 The porting script renames/moves the game assets to the structure that is expected for the Linux platform.
 
 Even though that works, we still have a problem, DELTARUNE is divided in Chapters and each of them have their own game folder and their own game data
+
 Internally, the game switches between them using a special function called `game_change()` that is unsupported on Linux.
 
-As a workaround, the game's code was patched so that when Chapters are switched, a empty file indicating the switch is created on DELTARUNE's save directory
+As a workaround, the game's code was patched so that when Chapters are switched, an empty file indicating the switch is created on DELTARUNE's save directory
 
 It looks like this: `~/.config/DELTARUNE/deltaport_chapter# <- Chapter number`
 This trigger file is then read by the `DELTARUNE.sh` script which launches the chapter, replicating `game_change`
@@ -69,7 +74,6 @@ This trigger file is then read by the `DELTARUNE.sh` script which launches the c
 The goal here is for it to work almost exactly like the Windows version.
 
 ## Dependencies <img width="35rem" alt="susie turning around" src="https://github.com/user-attachments/assets/7e73bb95-805b-4680-a5b1-f113d98cea34" />
-
 
 A `deps.sh` file is already included in the repo and is used by the the `port.sh` script.
 
@@ -92,3 +96,6 @@ That being said, it is required to have:
 Go to line **569/570** (333/334 on Chapter 1) and change the `.` to a `,` or vice-versa.
 
 * Controller input may not work
+
+[^1]: The DELTARUNE logo and characters are copyright of Toby Fox, being used under fair use.
+[^2]: DELTARUNE is a trademark of Royal Sciences LLC
