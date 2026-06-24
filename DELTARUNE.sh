@@ -10,6 +10,7 @@ CHAPTER1_FILE="deltaport_chapter1"
 CHAPTER2_FILE="deltaport_chapter2"
 CHAPTER3_FILE="deltaport_chapter3"
 CHAPTER4_FILE="deltaport_chapter4"
+CHAPTER5_FILE="deltaport_chapter5"
 
 # Just in case
 mkdir -p $SAVEDIR
@@ -44,7 +45,11 @@ if [ -f "$CHAPTER3_FILE" ]; then
 fi
 
 if [ -f "$CHAPTER4_FILE" ]; then
-	rm $CHAPTER4_FILE
+	rm $CHAPTER5_FILE
+fi
+
+if [ -f "$CHAPTER4_FILE" ]; then
+	rm $CHAPTER5_FILE
 fi
 
 if [ -f "$END_FILE" ]; then
@@ -88,6 +93,9 @@ parse_file() {
 	elif [ "$1" == "$CHAPTER4_FILE" ]; then
 		rm $1
 		change_chapter 4
+	elif [ "$1" == "$CHAPTER5_FILE" ]; then
+		rm $1
+		change_chapter 5
 	else
 		return
 	fi
@@ -108,6 +116,9 @@ change_chapter() {
 		run_game
 	elif [ "$1" == "4" ]; then
 		cd "$DELTARUNEDIR/chapter4_linux"
+		run_game
+	elif [ "$1" == "5" ]; then
+		cd "$DELTARUNEDIR/chapter5_linux"
 		run_game
 	fi
 }

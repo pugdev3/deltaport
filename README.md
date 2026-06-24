@@ -12,7 +12,7 @@ This doesn't include any game data, you will need to own a copy of the game.
 
 ## Usage
 > [!IMPORTANT]
-> Currently you need version **1.05** or **1.04** to use this script!
+> Currently you need version **1.06**, **1.05** or **1.04** to use this script!
  
 Download the latest release, and double-click `port.sh` or run in your terminal:
 

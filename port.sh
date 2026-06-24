@@ -9,6 +9,7 @@ CHAPTERS=4
 
 VERSION_104_CHECKSUM="9d1fea9de81219ea7304f32f1ae7a878"
 VERSION_105_CHECKSUM="5d3e158dbe6888fbf24471019fbde3c9"
+VERSION_106_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -30,14 +31,21 @@ function port_game() {
 
    if echo "${VERSION_104_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         VERSION="1.04"
+        CHAPTERS=4
    fi
 
    if echo "${VERSION_105_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         VERSION="1.05"
+        CHAPTERS=4
+   fi
+
+    if echo "${VERSION_106_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="1.06"
+        CHAPTERS=5
    fi
 
    if [[ "$VERSION" == "" ]]; then
-        warn "WARNING: data.win checksum does not match with any version. Please check supported versions or you may have corrupt game files. A reminder this is for version 1.04/1.05"
+        warn "WARNING: data.win checksum does not match with any version. Please check supported versions or you may have corrupt game files. A reminder this is for version 1.04/1.05/1.06"
         while true; do
             read -p "Continue anyway? [y/n]: " yn
             case $yn in
@@ -106,10 +114,10 @@ function port_game() {
    cd "$SCRIPTDIR"
 
    log "Patching game data..."
-   hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
-   for ((i = 1 ; i <= CHAPTERS ; i++)); do
-        hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/v$VERSION/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
-   done
+    hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
+    for ((i = 1 ; i <= CHAPTERS ; i++)); do
+         hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/v$VERSION/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
+    done
 
    echo -e "\e[1;32m SUCCESS! The port script finished. \e[0m"
    log 'To play DELTARUNE, go to Steam -> DELTARUNE -> Properties -> Launch Options -> Put this: "./DELTARUNE.sh" -- %command%'
@@ -141,7 +149,7 @@ function select_dir() {
 }
 
 log "Welcome to the unofficial DELTARUNE Linux port."
-log "This is the port for v1.04/1.05"
+log "This is the port for v1.04/1.05/1.06"
 log "You will need to bring your own game files, as none of them are included here."
 echo ""
 
