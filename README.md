@@ -10,9 +10,13 @@ This was originally made as a learning project for personal use, the game works 
 
 This doesn't include any game data, you will need to own a copy of the game.
 
+Flatpak Steam and immutable distros are not supported.
+
+Only available for Linux x86_64
+
 ## Usage
 > [!IMPORTANT]
-> Currently you need version **1.06**, **1.05** or **1.04** to use this script!
+> Check out [Supported versions](https://github.com/pugdev3/deltaport/edit/main/README.md#supported-versions) for which versions you can use.
  
 Download the latest release, and double-click `port.sh` or run in your terminal:
 
@@ -23,7 +27,9 @@ Follow the instructions on the screen and then launch the game through Steam or 
 
 This project was tested on Ubuntu 26.04 and Arch Linux.
 
-Flatpak Steam and immutable distros are not supported.
+https://github.com/user-attachments/assets/9e50df05-e07f-4e7a-8951-ed42dc3346b4
+
+(small video demo)
 
 ## Other versions <img width="30rem" alt="kris doing two" src="https://github.com/user-attachments/assets/973789b5-0c1b-4577-a24f-f7cb7314eb6c" />
 
@@ -43,7 +49,7 @@ Now, go to [here](https://steamdb.info/depot/1671212/manifests/) on SteamDB, you
 
 Make sure the copy format is: `Steam console` and click copy.
 
-Back on Steam, type `download_depot` and paste what you copied, it should look like this:
+Back on Steam, go ahead and paste what you copied, it should look like this:
 
 <img width="800em" alt="steam window on console tab with download_depot command" src="https://github.com/user-attachments/assets/09828c1f-e84f-4622-9bf0-0bec4b70c16c" />
 
@@ -54,6 +60,17 @@ After this, hit enter, it should start downloading the depot.
 You may notice that at the end of the path `\steamapps\content\app_1671210\depot_1671212` Steam puts `\` there for some reason, just change it to `/` and open it in your file browser of choice, you should have a copy of the game, run `port.sh` and select this directory and you're good to go!
 
 If you want to open the game through Steam, just move the directory to `steamapps/common/DELTARUNE` so that Steam uses it.
+
+## Supported versions
+Here is a list of supported versions:
+| Version                                                                       | Supported  |
+| -------------                                                                       | ------------- |
+| Patch 1.04                                                                    | 👍            |
+| Public Beta 1.05                                                         | 👍            |
+| Chapter 5 (1.06)                                                         | 👍            |
+| 1.07 (also known as "Chapter 5 0.0.241")         | 👍            |
+
+Other versions can be upgraded using the update script + Steam update
 
 ## How it works <img width="35rem" alt="thinking pug" src="https://github.com/user-attachments/assets/8ce7e9a3-9809-4022-b6bc-95cc2165cab1" />
 
@@ -96,6 +113,8 @@ That being said, it is required to have:
 Go to line **569/570** (333/334 on Chapter 1) and change the `.` to a `,` or vice-versa.
 
 * Controller input may not work
+
+* Annoying dogs may appear during gameplay
 
 [^1]: The DELTARUNE logo and characters are copyright of Toby Fox, being used under fair use.
 [^2]: DELTARUNE is a trademark of Royal Sciences LLC

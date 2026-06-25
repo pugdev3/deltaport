@@ -27,6 +27,30 @@ fi
 function port_game() {
    echo ""
 
+    if [[ -f "$DELTARUNEDIR/DELTARUNE.sh" ]]; then
+        if [[ -f "$DELTARUNEDIR/data.win" ]]; then
+            log "Windows and Linux game data detected on DELTARUNE directory, assuming an update, do you want to update the game port to the latest version?"
+            while true; do
+            read -p "Update game? [y/n]: " yn
+                case $yn in
+                    [Yy]* ) "$SCRIPTDIR/update.sh" "$DELTARUNEDIR"; break;;
+                    [Nn]* ) exit 1; break;;
+                    * ) exit 1; break;;
+                esac
+            done
+        else
+            warn "WARNING: It appears the game has already been ported (DELTARUNE.sh file found). Trying to port again may cause issues."
+            while true; do
+                read -p "Continue anyway? [y/n]: " yn
+                case $yn in
+                    [Yy]* ) break;;
+                    [Nn]* ) exit 1; break;;
+                    * ) exit 1; break;;
+                esac
+            done
+        fi
+    fi
+
    log "Detecting game version..."
 
    if echo "${VERSION_104_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
@@ -49,7 +73,7 @@ function port_game() {
         while true; do
             read -p "Continue anyway? [y/n]: " yn
             case $yn in
-                [Yy]* ) log "Using version 1.05" && VERSION="1.05"; break;;
+                [Yy]* ) log "Using version 1.07" && VERSION="1.07"; break;;
                 [Nn]* ) exit 1; break;;
                 * ) exit 1; break;;
 		    esac
@@ -141,7 +165,9 @@ function port_game() {
    echo -e "\e[1;32m SUCCESS! The port script finished. \e[0m"
    log 'To play DELTARUNE, go to Steam -> DELTARUNE -> Properties -> Launch Options -> Put this: "./DELTARUNE.sh" -- %command%'
    log "Or, you can run ./DELTARUNE.sh in the game folder. (If you have issues with Steam, run the game this way)"
+   log "For small updates on Steam, run this script again to update the port."
    log "Thanks for using this project and have fun!"
+   exit 0
 }
 
 function select_dir() {
@@ -158,14 +184,15 @@ function select_dir() {
         select_dir
    fi
 
-   if [ ! -f "$path/data.win" ]; then
-        warn "Unable to find game data (data.win) at directory, please try again."
+   if [ ! -f "$path/data.win" ] && [ ! -f "$path/assets/game.unx" ]; then
+        warn "Unable to find game data (data.win/game.unx) at directory, please try again."
         select_dir
    fi
 
    DELTARUNEDIR=${path%/}
    port_game
 }
+
 
 log "Welcome to the unofficial DELTARUNE Linux port."
 log "This is the port for v1.04/1.06/1.07"
