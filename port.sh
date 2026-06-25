@@ -8,8 +8,8 @@ VERSION=""
 CHAPTERS=4
 
 VERSION_104_CHECKSUM="9d1fea9de81219ea7304f32f1ae7a878"
-VERSION_105_CHECKSUM="5d3e158dbe6888fbf24471019fbde3c9"
 VERSION_106_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
+VERSION_107_CHECKSUM="0a448a89c32c802a138621a39ced69db"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -34,18 +34,18 @@ function port_game() {
         CHAPTERS=4
    fi
 
-   if echo "${VERSION_105_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="1.05"
-        CHAPTERS=4
-   fi
-
-    if echo "${VERSION_106_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+   if echo "${VERSION_106_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         VERSION="1.06"
         CHAPTERS=5
    fi
 
+    if echo "${VERSION_107_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="1.07"
+        CHAPTERS=5
+   fi
+
    if [[ "$VERSION" == "" ]]; then
-        warn "WARNING: data.win checksum does not match with any version. Please check supported versions or you may have corrupt game files. A reminder this is for version 1.04/1.05/1.06"
+        warn "WARNING: data.win checksum does not match with any version. Please check supported versions or you may have corrupt game files. A reminder this is for version 1.04/1.06/1.07"
         while true; do
             read -p "Continue anyway? [y/n]: " yn
             case $yn in
@@ -106,14 +106,33 @@ function port_game() {
    mkdir -p "assets"
    mv options.ini game.unx mus icon.png -t "assets/"
 
-   log "Symlinking videos..."
+   log "Symlinking Chapter 3's videos..."
+
    cd "chapter3_linux/assets/vid"
    ln -s "tennaintrof1_compressed_28.mp4" "tennaIntroF1_compressed_28.mp4"
    ln -s "tennaintrojpf1_compressed_28.mp4" "tennaIntroJPf1_compressed_28.mp4"
 
+   if [[ "$CHAPTERS" -ge 5 ]]; then
+        log "Fixing Chapter 5's videos..."
+
+        cd "$DELTARUNEDIR"
+        cd "chapter5_linux/assets/vid"
+        cp ch5_intro_en.mp4 ch5_intro_en.mp4.temp
+        cp ch5_intro_jp.mp4 ch5_intro_jp.mp4.temp
+
+        # On Chapter 5, the audio is separate from the video
+        # This causes an error on Linux, since the videos don't have an audio stream. Error: 'video_open: Cannot find audio stream'
+        # Here, we create a dummy audio stream in the file with no audio, so the file is loaded properly.
+        ffmpeg -y -i ch5_intro_en.mp4.temp -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -c:v copy -shortest ch5_intro_en.mp4
+        ffmpeg -y -i ch5_intro_jp.mp4.temp -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -c:v copy -shortest ch5_intro_jp.mp4
+
+        rm ch5_intro_en.mp4.temp
+        rm ch5_intro_jp.mp4.temp
+   fi
    cd "$SCRIPTDIR"
 
    log "Patching game data..."
+
    hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
    for ((i = 1 ; i <= CHAPTERS ; i++)); do
          hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/v$VERSION/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
@@ -149,7 +168,7 @@ function select_dir() {
 }
 
 log "Welcome to the unofficial DELTARUNE Linux port."
-log "This is the port for v1.04/1.05/1.06"
+log "This is the port for v1.04/1.06/1.07"
 log "You will need to bring your own game files, as none of them are included here."
 echo ""
 
