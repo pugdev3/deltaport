@@ -16,7 +16,7 @@ Only available for Linux x86_64
 
 ## Usage
 > [!IMPORTANT]
-> Check out [Supported versions](https://github.com/pugdev3/deltaport#supported-versions) for which versions you can use.
+> Check out [Supported versions](https://github.com/pugdev3/deltaport#supported-versions-) for which versions you can use.
  
 Download the latest release, and double-click `port.sh` or run in your terminal:
 
