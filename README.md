@@ -16,7 +16,7 @@ Only available for Linux x86_64
 
 ## Usage
 > [!IMPORTANT]
-> Check out [Supported versions](https://github.com/pugdev3/deltaport/edit/main/README.md#supported-versions) for which versions you can use.
+> Check out [Supported versions](https://github.com/pugdev3/deltaport#supported-versions) for which versions you can use.
  
 Download the latest release, and double-click `port.sh` or run in your terminal:
 
@@ -61,14 +61,19 @@ You may notice that at the end of the path `\steamapps\content\app_1671210\depot
 
 If you want to open the game through Steam, just move the directory to `steamapps/common/DELTARUNE` so that Steam uses it.
 
-## Supported versions
-Here is a list of supported versions:
-| Version                                                                       | Supported  |
-| -------------                                                                       | ------------- |
-| Patch 1.04                                                                    | 👍            |
-| Public Beta 1.05                                                         | 👍            |
-| Chapter 5 (1.06)                                                         | 👍            |
-| 1.07 (also known as "Chapter 5 0.0.241")         | 👍            |
+## Supported versions <img width="35rem" alt="happy cat" src="https://github.com/user-attachments/assets/8dc9e7c9-6ccc-4dd3-bdb9-28a138d09b85" />
+
+Here is a list of the currently supported versions by the port:
+| Version  | MD5 Checksum  | Launch date | Release/branch |
+| -------- | ------------- | ----------- | -------------- |
+| [v1.01C and older](https://steamdb.info/patchnotes/18791270/) <img width="35rem" alt="gerson saying i'm old" src="https://github.com/user-attachments/assets/6839c8c1-1419-4c0e-bcc0-124690ed78de" /> | `bdd3fbeb0f51a7b522ca296092a20853` | < 9 June 2025 | [legacy](https://github.com/pugdev3/deltaport/tree/legacy) (branch)
+| [v1.04](https://steamdb.info/patchnotes/19477244/) | `9d1fea9de81219ea7304f32f1ae7a878` | 5 August 2025 | [v0.01](https://github.com/pugdev3/deltaport/releases/download/v0.01/deltaport-v0.01.tar.xz)                                                            
+| [v1.05 (deltarune105 beta)](https://bsky.app/profile/undertale.com/post/3lxbfrqodwc2l) | `5d3e158dbe6888fbf24471019fbde3c9` | 26 August 2025 | [v0.01](https://github.com/pugdev3/deltaport/releases/download/v0.01/deltaport-v0.01.tar.xz)        
+| [v0.0.240 (Chapter 5 release)](https://steamdb.info/patchnotes/23736632/) | `f3dabe6444829688fd7fbaa68f78794f` | 24 June 2026 | [v0.02](https://github.com/pugdev3/deltaport/releases/download/v0.02/deltaport-v0.02.tar.xz)/[v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)          
+| [v0.0.241](https://steamdb.info/patchnotes/23909557/) | `0a448a89c32c802a138621a39ced69db` | 25 June 2026 | [v0.02](https://github.com/pugdev3/deltaport/releases/download/v0.02/deltaport-v0.02.tar.xz)/[v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
+| [v0.0.242](https://steamdb.info/patchnotes/23942272/) | `cc76c5efeb1b5fefd1822ceb1340ca10` | 27 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
+| [v0.0.243](https://steamdb.info/patchnotes/23962447/) | `359adb2db26d7e902f4c26b40e9b58ae` | 29 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
+| [v0.0.244](https://bsky.app/profile/undertale.com/post/3mpkv5vypm22a) | `ddedbbd10ff129b49c64dbefaa763c6a` | 1 July 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)
 
 Other versions can be upgraded using the update script + Steam update
 
@@ -99,7 +104,8 @@ It should automatically install all the necessary dependencies for you, unless y
 That being said, it is required to have:
 * `hpatchz` - From [HDiffPatch](https://github.com/sisong/HDiffPatch), this is used for patching the game (older versions used xdelta3)
 * `inotifywait` - Used to listen for trigger files in the save directory, can be found in distros by the name `inotify-tools`
-* `ffmpeg4` - Used to play a video on Chapter 3, note that GameMaker 2022 LTS requires specifically FFmpeg4 to work.
+* `ffmpeg4` - Used to play videos on Chapter 3/5, note that GameMaker 2022 LTS requires specifically FFmpeg4 to work.
+* `ffmpeg` - Needed to fix video playback in Chapter 5
 * `wget` - Should be pre-installed in almost any distro, used to download some files.
 
 ## Known issues <img width="35rem" alt="shocked ralsei" src="https://github.com/user-attachments/assets/f081e38a-e5a1-4c24-a34e-de28e8c98eb9" />
@@ -114,7 +120,7 @@ Go to line **569/570** (333/334 on Chapter 1) and change the `.` to a `,` or vic
 
 * Controller input may not work
 
-* Annoying dogs may appear during gameplay
+* An annoying dog may appear during gameplay
 
 [^1]: The DELTARUNE logo and characters are copyright of Toby Fox, being used under fair use.
 [^2]: DELTARUNE is a trademark of Royal Sciences LLC

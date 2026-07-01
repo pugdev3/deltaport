@@ -5,11 +5,13 @@ set -E
 DELTARUNEDIR=""
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
-CHAPTERS=4
+CHAPTERS=5
 
-VERSION_104_CHECKSUM="9d1fea9de81219ea7304f32f1ae7a878"
-VERSION_106_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
-VERSION_107_CHECKSUM="0a448a89c32c802a138621a39ced69db"
+VERSION_240_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
+VERSION_241_CHECKSUM="0a448a89c32c802a138621a39ced69db"
+VERSION_242_CHECKSUM="cc76c5efeb1b5fefd1822ceb1340ca10"
+VERSION_243_CHECKSUM="359adb2db26d7e902f4c26b40e9b58ae"
+VERSION_244_CHECKSUM="ddedbbd10ff129b49c64dbefaa763c6a"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -24,6 +26,28 @@ if [ ! -d "$HOME/.local/share/Steam" ]; then
 fi
 "$SCRIPTDIR/deps.sh"
 
+function check_version {
+   if echo "${VERSION_240_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.240"
+   fi
+
+    if echo "${VERSION_241_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.241"
+   fi
+
+    if echo "${VERSION_242_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.242"
+   fi
+
+    if echo "${VERSION_243_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.243"
+   fi
+
+    if echo "${VERSION_244_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.244"
+   fi
+}
+
 function port_game() {
    echo ""
 
@@ -33,7 +57,7 @@ function port_game() {
             while true; do
             read -p "Update game? [y/n]: " yn
                 case $yn in
-                    [Yy]* ) "$SCRIPTDIR/update.sh" "$DELTARUNEDIR"; break;;
+                    [Yy]* ) "$SCRIPTDIR/update.sh" "$DELTARUNEDIR" && exit 0; break;;
                     [Nn]* ) exit 1; break;;
                     * ) exit 1; break;;
                 esac
@@ -53,27 +77,14 @@ function port_game() {
 
    log "Detecting game version..."
 
-   if echo "${VERSION_104_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="1.04"
-        CHAPTERS=4
-   fi
-
-   if echo "${VERSION_106_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="1.06"
-        CHAPTERS=5
-   fi
-
-    if echo "${VERSION_107_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="1.07"
-        CHAPTERS=5
-   fi
+   check_version
 
    if [[ "$VERSION" == "" ]]; then
-        warn "WARNING: data.win checksum does not match with any version. Please check supported versions or you may have corrupt game files. A reminder this is for version 1.04/1.06/1.07"
+        warn "WARNING: data.win checksum does not match with any version. Please check supported versions or you may have corrupt game files. A reminder this is for version(s) 0.0.240-44"
         while true; do
             read -p "Continue anyway? [y/n]: " yn
             case $yn in
-                [Yy]* ) log "Using version 1.07" && VERSION="1.07"; break;;
+                [Yy]* ) log "Using latest version available" && VERSION="0.0.244"; break;;
                 [Nn]* ) exit 1; break;;
                 * ) exit 1; break;;
 		    esac
@@ -165,7 +176,7 @@ function port_game() {
    echo -e "\e[1;32m SUCCESS! The port script finished. \e[0m"
    log 'To play DELTARUNE, go to Steam -> DELTARUNE -> Properties -> Launch Options -> Put this: "./DELTARUNE.sh" -- %command%'
    log "Or, you can run ./DELTARUNE.sh in the game folder. (If you have issues with Steam, run the game this way)"
-   log "For small updates on Steam, run this script again to update the port."
+   log "For updates on Steam, go through this script again to update the port to the latest version available."
    log "Thanks for using this project and have fun!"
    exit 0
 }
@@ -195,7 +206,7 @@ function select_dir() {
 
 
 log "Welcome to the unofficial DELTARUNE Linux port."
-log "This is the port for v1.04/1.06/1.07"
+log "This is the port for version(s): 0.0.240-44"
 log "You will need to bring your own game files, as none of them are included here."
 echo ""
 

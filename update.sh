@@ -4,13 +4,14 @@ set -e pipefail
 set -E
 
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-CHAPTERS=4
+CHAPTERS=5
 UPDATED_VERSION=""
 
-VERSION_104_CHECKSUM="9d1fea9de81219ea7304f32f1ae7a878"
-VERSION_105_CHECKSUM="5d3e158dbe6888fbf24471019fbde3c9"
-VERSION_106_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
-VERSION_107_CHECKSUM="0a448a89c32c802a138621a39ced69db"
+VERSION_240_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
+VERSION_241_CHECKSUM="0a448a89c32c802a138621a39ced69db"
+VERSION_242_CHECKSUM="cc76c5efeb1b5fefd1822ceb1340ca10"
+VERSION_243_CHECKSUM="359adb2db26d7e902f4c26b40e9b58ae"
+VERSION_244_CHECKSUM="ddedbbd10ff129b49c64dbefaa763c6a"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -31,58 +32,50 @@ trap 'warn "WARNING: Script cancelled by user, port may be incomplete." && exit 
 trap 'error "An error ocurred while running this script :("' ERR
 
 if [[ "$DELTARUNEDIR" == "" ]]; then
-        error "ERROR: DELTARUNE directory not found somehow? Something went wrong :/"
+        error "ERROR: DELTARUNE directory not found somehow? (Don't run the script directly, use port.sh) Something went wrong :/"
 fi
 
 if [[ ! -f "$DELTARUNEDIR/data.win" ]]; then
         error "ERROR: DELTARUNE game data not found. Something went wrong :/"
 fi
 
+log "Updating your deltaport version"
+log "This only updates the game data, not external files (unlikely for those to change anyway)"
+
+function check_version {
+   if echo "${VERSION_240_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        UPDATED_VERSION="0.0.240"
+   fi
+
+    if echo "${VERSION_241_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        UPDATED_VERSION="0.0.241"
+   fi
+
+    if echo "${VERSION_242_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        UPDATED_VERSION="0.0.242"
+   fi
+
+    if echo "${VERSION_243_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        UPDATED_VERSION="0.0.243"
+   fi
+
+    if echo "${VERSION_244_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        UPDATED_VERSION="0.0.244"
+   fi
+}
+
 log "Detecting updated game version..."
 
-if echo "${VERSION_104_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-    UPDATED_VERSION="1.04"
-    CHAPTERS=4
-fi
-
-if echo "${VERSION_104_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-    UPDATED_VERSION="1.05"
-    CHAPTERS=5
-fi
-
-if echo "${VERSION_106_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-    UPDATED_VERSION="1.06"
-    CHAPTERS=5
-fi
-
-if echo "${VERSION_107_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-    UPDATED_VERSION="1.07"
-    CHAPTERS=5
-fi
+check_version
 
 if [[ "$UPDATED_VERSION" == "" ]]; then
-        error  "ERROR: Unable to detect updated game version :p"
+        error  "ERROR: Unsupported game version or unable to detect. As of now, versions that include new chapters require you to reinstall the game."
 else
         log "Detected updated version: $UPDATED_VERSION"
 fi
 
-if [[ "$UPDATED_VERSION" == "1.05" ]]; then
-    mkdir -p temp2
-    cd temp2
-    wget "https://github.com/pugdev3/deltaport/releases/download/v0.01/deltaport-v0.01.tar.xz" -O deltaport.tar.xz
-    tar -Jxvf deltaport.tar.xz files/patches
-    mkdir -p "$SCRIPTDIR/files/patches/v1.05"
-    cp files/patches/* "$SCRIPTDIR/files/patches/v1.05/"
-    cd ..
-    rm -r temp2
-fi
-
 if [[ ! -d "$DELTARUNEDIR/chapter5_linux" ]]; then
-    CHAPTERS=4
-fi
-
-if [[ ! -d "$DELTARUNEDIR/chapter5_linux" && $UPDATED_VERSION  != "1.04" && $UPDATED_VERSION != "1.05" ]]; then
-    warn "WARNING: Chapter 5 not found. You cannot update from a version below 1.06! (Versions with new chapters require a reinstall) You will most likely encounter issues."
+    warn "WARNING: Chapter 5 not found. You cannot update from a version below v0.0.240 (Chapter 5 release version)! (Versions with new chapters require a reinstall) You will most likely encounter issues."
     while true; do
         read -p "Continue anyway? [y/n]: " yn
 		case $yn in
