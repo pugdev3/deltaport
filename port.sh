@@ -34,9 +34,9 @@ function port_game() {
     if [[ -f "$DELTARUNEDIR/DELTARUNE.sh" ]]; then
         warn "AVISO: Parece que o jogo já foi portado pra Linux (Arquivo DELTARUNE.sh encontrado). Tentar portar denovo pode causar problemas."
         while true; do
-            read -p "Continuar mesmo assim? [y/n]: " yn
-            case $yn in
-                [Yy]* ) break;;
+            read -p "Continuar mesmo assim? [S/n]: " sn
+            case $sn in
+                [Ss]* ) break;;
                 [Nn]* ) exit 1; break;;
                 * ) exit 1; break;;
             esac
@@ -50,9 +50,9 @@ function port_game() {
    if [[ "$VERSION" == "" ]]; then
         warn "AVISO: Não foi possivel identificar a versão. Tenta verificar a integridade dos arquivos na Steam. Lembrando que você precisa da versão 1.40"
         while true; do
-            read -p "Continuar mesmo assim? [y/n]: " yn
-            case $yn in
-                [Yy]* ) log "Usando a última versão disponível" && VERSION="1.40"; break;;
+            read -p "Continuar mesmo assim? [S/n]: " sn
+            case $sn in
+                [Ss]* ) log "Usando a última versão disponível" && VERSION="1.40"; break;;
                 [Nn]* ) exit 1; break;;
                 * ) exit 1; break;;
 		    esac
@@ -199,9 +199,9 @@ if [ -d "$HOME/.local/share/Steam/steamapps/common/DELTARUNE" ]; then
 	DELTARUNEDIR="$HOME/.local/share/Steam/steamapps/common/DELTARUNE"
 	log "Foi detectado uma instalação do DELTARUNE em: $DELTARUNEDIR."
 	while true; do
-		read -p "Isso está correto? [y/n]: " yn
-		case $yn in
-			[Yy]* ) port_game; break;;
+		read -p "Isso está correto? [S/n]: " sn
+		case $sn in
+			[Ss]* ) port_game; break;;
 			[Nn]* ) select_dir; break;;
 			* ) select_dir; break;;
 		    esac

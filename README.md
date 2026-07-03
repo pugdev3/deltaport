@@ -17,6 +17,8 @@ Digo novamente que este projeto **NÃO** está envolvido ou é afiliado de nenhu
 
 O port utiliza a [tradução feita por eles](https://github.com/teiarruma/deltarune-ptbr) e todos os scripts foram traduzidos para português.
 
+Créditos ao TEIARRUMA pela tradução maravilhosa e ao Tobias Raposo por ter criado esse jogaço :)
+
 ## Como usar
 > Você **precisa** da versão **1.40** para usar esse port, veja um pouco abaixo como conseguir essa versão.
  
@@ -76,7 +78,7 @@ O GameMaker: Studio, a ferramenta que o tobias raposo usa pra fazer o DELTARUNE,
 
 A gente pode tirar vantagem disso pra portar o jogo pra quase qualquer plataforma :D 
 
-Existem alguns projetos que tentam modificar ou recriar o runner como **[Butterscotch](https://github.com/ButterscotchRunner/Butterscotch/)** ou **[OpenGM](https://github.com/misternebula/OpenGM)**, 
+Existem alguns projetos que tentam modificar ou recriar o runner como **[Butterscotch](https://github.com/ButterscotchRunner/Butterscotch/)** ou **[OpenGM](https://github.com/misternebula/OpenGM)** 
 
 Não é o caso desse projeto, esses runners acabam sendo incompletos e tendo vários bugs, por isso, é usado o runner original, apenas modificando o código do jogo para funcionar.
 

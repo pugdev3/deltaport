@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FFMPEG4_INSTALLED=0
 HDIFFPATCH_INSTALLED=0
-deps=("hpatchz" "inotifywait" "ffmpeg" "wget")
+deps=("git" "hpatchz" "inotifywait" "ffmpeg" "wget")
 # Interno / para mostrar na tela
 missing_deps=()
 missing_deps_list=()
@@ -81,7 +81,7 @@ function install_deps() {
             log 'Instalando o repositório de terceiro "rpmfusion" para instalar os pacotes necessários...'
             sudo dnf install -y "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
         fi
-        sleep 5
+        sleep 3
         sudo dnf install --allowerasing -y ${missing_deps[*]} compat-ffmpeg4
         install_patcher
         log "Dependências instaladas com sucesso :)"
@@ -98,7 +98,8 @@ function install_deps() {
         then
             yay -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4 hdiffpatch-bin
         else
-            sudo pacman -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4
+            # base-devel é necessário no Arch para instalar coisas do AUR
+            sudo pacman -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4 base-devel
             git clone https://aur.archlinux.org/hdiffpatch-bin.git
             cd hdiffpatch-bin
             makepkg -si
@@ -164,13 +165,13 @@ function check_deps() {
         fi
     fi
 
-    if (( ${#missing_deps[@]} != 0 )); then
+    if (( ${#missing_deps_list[@]} != 0 )); then
         log "As seguintes dependências estão em falta no seu sistema: ${missing_deps_list[*]}"
         while true; do
-            read -p "Você quer instalar elas automaticamente? [y/n]: " yn
-            case $yn in
-                [Yy]* ) install_deps; break;;
-                [Nn]* ) break;;
+            read -p "Você quer instalar elas automaticamente? [S/n]: " sn
+            case $sn in
+                [Ss]* ) install_deps; break;;
+                [Nn]* ) warn "AVISO: Não instalar dependências pode causar problemas" && sleep 1; break;;
                 * ) break;;
             esac
         done
