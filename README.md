@@ -1,126 +1,123 @@
 # deltaport
-<img width="160rem" alt="deltaport logo" src=".github/deltaport.png" />[^1]
+<img width="160rem" alt="logo do deltaport" src=".github/deltaport.png" />
 
-> [!NOTE]
-> This project is NOT affiliated with nor endorsed by Toby Fox, Fangamer, YoYo Games Ltd or Opera Norway AS.
+> Esse projeto **NÃO** é afiliado com o Toby Fox ou TEIARRUMA.
 
-An unofficial (attempt) of porting DELTARUNE[^2] to Linux
+Uma tentativa (não oficial) de portar DELTARUNE para sistemas Linux 64-bit (x86_64).
 
-This was originally made as a learning project for personal use, the game works perfectly fine under Proton and you should probably be using that instead.
+Eu criei esse projeto com o objetivo de aprendizagem e uso pessoal, o jogo funciona perfeitamente com Proton e você provavelmente deveria usar ele.
 
-This doesn't include any game data, you will need to own a copy of the game.
+Esse port é para a versão **[paga da Steam](https://store.steampowered.com/app/1671210/DELTARUNE/)**, não havendo suporte para a DEMO atualmente. Nenhum arquivo do jogo é incluído aqui e você vai precisar trazer sua própria cópia.
 
-Flatpak Steam and immutable distros are not supported.
+A versão Flatpak/Snap da Steam e distros imutáveis como SteamOS e Bazzite não são suportados por esse port.
 
-Only available for Linux x86_64
+Essa é a versão **PT-BR** 🇧🇷 do deltaport, if you speak **English** 🇬🇧 , please go to the **[main branch](https://github.com/pugdev3/deltaport/tree/main)**
 
-## Usage
-> [!IMPORTANT]
-> Check out [Supported versions](https://github.com/pugdev3/deltaport#supported-versions) for which versions you can use.
+Digo novamente que este projeto **NÃO** está envolvido ou é afiliado de nenhuma forma com o **[TEIARRUMA](https://twitter.com/teiarruma)**, eles não dão suporte para ports não oficiais como esse e qualquer problema com a instalação deve ser reportado aqui.
+
+O port utiliza a [tradução feita por eles](https://github.com/teiarruma/deltarune-ptbr) e todos os scripts foram traduzidos para português.
+
+## Como usar
+> Você **precisa** da versão **1.40** para usar esse port, veja um pouco abaixo como conseguir essa versão.
  
-Download the latest release, and double-click `port.sh` or run in your terminal:
+Baixe o último [lançamento no Github](https://github.com/pugdev3/deltaport/releases/latest), extraia o arquivo, e dentro da pasta, clique duas vezes no `port.sh` ou rode no seu terminal:
 
 ```shell
-pug@puter ~>  ./port.sh
+pug@computaria ~>  ./port.sh
 ```
-Follow the instructions on the screen and then launch the game through Steam or run `DELTARUNE.sh` in the game directory.
+Certifique-se que você baixou a versão com `_pt_br` no nome ou se não você está usando a versão em inglês. E também que o jogo está no diretório correto: `~/.local/share/Steam/steamapps/common/DELTARUNE`
 
-This project was tested on Ubuntu 26.04 and Arch Linux.
+Depois disso siga as instruções na tela e então rode o jogo pela Steam ou execute  `DELTARUNE.sh` na pasta do jogo.
 
-https://github.com/user-attachments/assets/9e50df05-e07f-4e7a-8951-ed42dc3346b4
+Esse projeto foi testado no Arch Linux com KDE Plasma.
 
-(small video demo)
+https://github.com/user-attachments/assets/c1b5f803-d715-421c-aa3a-bee917fc5265
 
-## Other versions <img width="30rem" alt="kris doing two" src="https://github.com/user-attachments/assets/973789b5-0c1b-4577-a24f-f7cb7314eb6c" />
+(pequeno vídeo de demonstração do port rodando no Arch)
 
-If you're reading this in the future, you may find yourself having a different current version than the one supported here, in that case, here's how you can download a specific version of the game to able to use the port.
+## Baixando a versão correta <img width="30rem" alt="kris fazendo dois" src="https://github.com/user-attachments/assets/973789b5-0c1b-4577-a24f-f7cb7314eb6c" />
 
-Open your terminal program, and type `steam -console`, it should look like this:
+A maioria dos mods / traduções requerem uma versão específica do jogo para funcionar, e com o tempo, os devs atualizam o jogo, isso na Steam acaba dificultando acessar as versões antigas para download (a Steam só baixa a mais recente), por isso escrevi esse guia para você conseguir as versão correta.
+
+Lembrando que isso não é uma forma de pirataria, sua conta precisa possuir o DELTARUNE na Steam para os comandos funcionarem.
+
+Abra seu programa de terminal, digite `steam -console`, deve ser algo como isso:
 ```shell
-pug@puter ~> steam -console
+pug@computaria ~> steam -console
 ```
-After opening, click the Console tab:
+Pressione enter e depois de abrir, abra a aba de Console
 
-<img width="617" height="72" alt="steam with console tab" src="https://github.com/user-attachments/assets/cf77220e-773c-4436-87b3-4e9664665c00" />
+<img width="615" height="67" alt="steam com aba de console" src="https://github.com/user-attachments/assets/30de7990-1fea-4d2e-a155-09acbd6ff430" />
 
-Now, go to [here](https://steamdb.info/depot/1671212/manifests/) on SteamDB, you should find a list of manifests (versions) sorted by upload date, choose the one that applies
+Agora acesse **[este link do SteamDB](https://steamdb.info/depot/1671212/manifests/)**, a página está na inglês mas não se preocupe, vou dizer o que você precisa fazer
 
-<img width="378" height="54" alt="steamdb with two copy formats" src="https://github.com/user-attachments/assets/6e3eb9c4-9109-433c-bd57-6489c2ed564b" />
+<img width="800em" alt="página do SteamDB com as versões de DELTARUNE" src="https://github.com/user-attachments/assets/5186754f-04b9-4d92-8921-fc3a97b84f53" />
 
-Make sure the copy format is: `Steam console` and click copy.
+A onde está escrito `Copy format` (Formato de cópia) selecione `Steam console` e depois clique no botão de copiar do lado da setinha (logo abaixo de `deltarune105`)
 
-Back on Steam, go ahead and paste what you copied, it should look like this:
+Essa é a versão **1.04**, agora, volte para Steam e cole o que você copiou na caixinha de texto, deve ficar assim:
 
-<img width="800em" alt="steam window on console tab with download_depot command" src="https://github.com/user-attachments/assets/09828c1f-e84f-4622-9bf0-0bec4b70c16c" />
+<img width="800em" alt="aba de console da Steam com o comando download_depot colocado" src="https://github.com/user-attachments/assets/9b1bbbea-658d-44e6-b5c9-eca1a12d0b82" />
 
-After this, hit enter, it should start downloading the depot.
+Depois disso, pressione enter, e deve começar a baixar o jogo.
 
-<img width="800em" alt="steam console window with dolphin file manager" src="https://github.com/user-attachments/assets/877b55cf-2a35-41f3-bd35-4b6c89686200" />
-
-You may notice that at the end of the path `\steamapps\content\app_1671210\depot_1671212` Steam puts `\` there for some reason, just change it to `/` and open it in your file browser of choice, you should have a copy of the game, run `port.sh` and select this directory and you're good to go!
-
-If you want to open the game through Steam, just move the directory to `steamapps/common/DELTARUNE` so that Steam uses it.
-
-## Supported versions <img width="35rem" alt="happy cat" src="https://github.com/user-attachments/assets/8dc9e7c9-6ccc-4dd3-bdb9-28a138d09b85" />
-
-Here is a list of the currently supported versions by the port:
-| Version  | MD5 Checksum  | Launch date | Release/branch |
-| -------- | ------------- | ----------- | -------------- |
-| [v1.01C and older](https://steamdb.info/patchnotes/18791270/) <img width="35rem" alt="gerson saying i'm old" src="https://github.com/user-attachments/assets/6839c8c1-1419-4c0e-bcc0-124690ed78de" /> | `bdd3fbeb0f51a7b522ca296092a20853` | < 9 June 2025 | [legacy](https://github.com/pugdev3/deltaport/tree/legacy) (branch)
-| [v1.04](https://steamdb.info/patchnotes/19477244/) | `9d1fea9de81219ea7304f32f1ae7a878` | 5 August 2025 | [v0.01](https://github.com/pugdev3/deltaport/releases/download/v0.01/deltaport-v0.01.tar.xz)                                                            
-| [v1.05 (deltarune105 beta)](https://bsky.app/profile/undertale.com/post/3lxbfrqodwc2l) | `5d3e158dbe6888fbf24471019fbde3c9` | 26 August 2025 | [v0.01](https://github.com/pugdev3/deltaport/releases/download/v0.01/deltaport-v0.01.tar.xz)        
-| [v0.0.240 (Chapter 5 release)](https://steamdb.info/patchnotes/23736632/) | `f3dabe6444829688fd7fbaa68f78794f` | 24 June 2026 | [v0.02](https://github.com/pugdev3/deltaport/releases/download/v0.02/deltaport-v0.02.tar.xz)/[v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)          
-| [v0.0.241](https://steamdb.info/patchnotes/23909557/) | `0a448a89c32c802a138621a39ced69db` | 25 June 2026 | [v0.02](https://github.com/pugdev3/deltaport/releases/download/v0.02/deltaport-v0.02.tar.xz)/[v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
-| [v0.0.242](https://steamdb.info/patchnotes/23942272/) | `cc76c5efeb1b5fefd1822ceb1340ca10` | 27 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
-| [v0.0.243](https://steamdb.info/patchnotes/23962447/) | `359adb2db26d7e902f4c26b40e9b58ae` | 29 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
-| [v0.0.244](https://bsky.app/profile/undertale.com/post/3mpkv5vypm22a) | `ddedbbd10ff129b49c64dbefaa763c6a` | 1 July 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)
-
-Other versions can be upgraded using the update script + Steam update
-
-## How it works <img width="35rem" alt="thinking pug" src="https://github.com/user-attachments/assets/8ce7e9a3-9809-4022-b6bc-95cc2165cab1" />
+<img width="800em" alt="Steam com aba de console e gerenciador de arquivos Dolphin" src="https://github.com/user-attachments/assets/368d92f0-fff8-434f-807e-1fc175a87959" />
 
 
-As GameMaker: Studio exports game code as bytecode instead of native code, we're able to run the game in any platform as long as we have a compatible runner (The GMS runner)
+Na captura de tela você deve ter percebido que no caminho do jogo: `\steamapps\content\app_1671210\depot_1671212` a Steam coloca `\` no meio por algum motivo (virou Windows agora steam??), só mudar para `/` e abrir no seu explorador de arquivos de escolha, você deve ter a versão 1.04 baixada no seu PC!
 
-The porting script renames/moves the game assets to the structure that is expected for the Linux platform.
+Agora, se você quer abrir o jogo pela Steam, primeiro você tem que instalar o jogo pela Steam, depois abra `~/.local/share/Steam/steamapps/common` e apague a pasta do DELTARUNE e substitua pela pastinha `depot_1671212` que a gente baixou usando o comando
 
-Even though that works, we still have a problem, DELTARUNE is divided in Chapters and each of them have their own game folder and their own game data
+Você pode fazer isso antes ou depois de portar o jogo, só tenha certeza de escolher a pasta correta.
 
-Internally, the game switches between them using a special function called `game_change()` that is unsupported on Linux.
+## Como esse trem funciona? <img width="35rem" alt="pug pensante" src="https://github.com/user-attachments/assets/8ce7e9a3-9809-4022-b6bc-95cc2165cab1" />
 
-As a workaround, the game's code was patched so that when Chapters are switched, an empty file indicating the switch is created on DELTARUNE's save directory
+O GameMaker: Studio, a ferramenta que o tobias raposo usa pra fazer o DELTARUNE, exporta os jogos como bytecode (código não específico a uma plataforma) ao invés de código nativo compilado, esse código então é interpretado pelo runner (o .exe, executável específico da plataforma) que roda o jogo no seu PC numa espécie de máquina virtual, similar a como o Java funciona.
 
-It looks like this: `~/.config/DELTARUNE/deltaport_chapter# <- Chapter number`
-This trigger file is then read by the `DELTARUNE.sh` script which launches the chapter, replicating `game_change`
+A gente pode tirar vantagem disso pra portar o jogo pra quase qualquer plataforma :D 
 
-The goal here is for it to work almost exactly like the Windows version.
+Existem alguns projetos que tentam modificar ou recriar o runner como **[Butterscotch](https://github.com/ButterscotchRunner/Butterscotch/)** ou **[OpenGM](https://github.com/misternebula/OpenGM)**, 
 
-## Dependencies <img width="35rem" alt="susie turning around" src="https://github.com/user-attachments/assets/7e73bb95-805b-4680-a5b1-f113d98cea34" />
+Não é o caso desse projeto, esses runners acabam sendo incompletos e tendo vários bugs, por isso, é usado o runner original, apenas modificando o código do jogo para funcionar.
 
-A `deps.sh` file is already included in the repo and is used by the the `port.sh` script.
+O script do port modifica a estrutura do jogo para a estrutura que o GameMaker espera de um jogo de Linux e utiliza o runner específico do sistema, isso funciona, porém, ainda temos alguns problemas.
 
-It should automatically install all the necessary dependencies for you, unless you're on some niche distro
+o DELTARUNE tem vários capítulos, e cada um deles tem sua propria pastinha com o código e arquivos do capítulo
 
-That being said, it is required to have:
-* `hpatchz` - From [HDiffPatch](https://github.com/sisong/HDiffPatch), this is used for patching the game (older versions used xdelta3)
-* `inotifywait` - Used to listen for trigger files in the save directory, can be found in distros by the name `inotify-tools`
-* `ffmpeg4` - Used to play videos on Chapter 3/5, note that GameMaker 2022 LTS requires specifically FFmpeg4 to work.
-* `ffmpeg` - Needed to fix video playback in Chapter 5
-* `wget` - Should be pre-installed in almost any distro, used to download some files.
+Internamente, o jogo muda entre capítulos usando uma função especial chamada `game_change()` que não tem suporte pra Linux
 
-## Known issues <img width="35rem" alt="shocked ralsei" src="https://github.com/user-attachments/assets/f081e38a-e5a1-4c24-a34e-de28e8c98eb9" />
+Pra resolver isso, foi implementada uma gambiarra no código do jogo, criando um arquivo especial na pasta de saves do jogo ao invés de chamar essa função
 
+Fica mais ou menos assim: `~/.config/DELTARUNE/deltaport_chapter# <- Número do capítulo`
+Esse arquivo então é lido pelo `DELTARUNE.sh` que faz a troca, replicando o `game_change()`
 
-* When loading a save file, you may notice that your music/audio is gone, to fix this, go to your save directory: `~/.config/DELTARUNE` and open your save file:
-1. `filech#_0` - First save slot
-2. `filech#_1` - Second save slot
-3. `filech#_2` - Third save slot
+O objetivo aqui é funcionar quase igual a versão de Windows.
 
-Go to line **569/570** (333/334 on Chapter 1) and change the `.` to a `,` or vice-versa.
+Para a gente conseguir modificar o código do jogo, são usados patches binários, eles estão separados em duas pastas dentro do repositório, a pasta `files/patches/[VERSÃO]/deltaport` essas são as do deltaport, e as patches da pasta `files/patches/[VERSÃO]/pt_br` esse é o código do TEIARRUMA para traduzir o jogo em PT-BR
 
-* Controller input may not work
+Esses patches apenas contém a diferença entre os dois arquivos, então você precisa ter um `data.win` (arquivo do jogo) que seja compátivel com o patch pra funcionar.
 
-* An annoying dog may appear during gameplay
+## Dependências <img width="35rem" alt="susie virada" src="https://github.com/user-attachments/assets/7e73bb95-805b-4680-a5b1-f113d98cea34" />
 
-[^1]: The DELTARUNE logo and characters are copyright of Toby Fox, being used under fair use.
-[^2]: DELTARUNE is a trademark of Royal Sciences LLC
+O arquivo `deps.sh` é incluído no repositório e é usado pelo script principal: `port.sh`
+
+Ele deve instalar automaticamente todas as dependências para você, a menos que você esteja no nichoOS
+
+Dito isso, é preciso ter:
+* `hpatchz` - De [HDiffPatch](https://github.com/sisong/HDiffPatch), isso é usado para aplicar as patches no jogo (antigamente era usado o xdelta3)
+* `inotifywait` - Usado para observar a pasta de saves por arquivos de gatilho, na maioria das distros o nome do pacote é `inotify-tools`
+* `ffmpeg4` - Usado para reproduzir vídeos nos capítulo 3, nota que o GameMaker 2022 LTS precisa especificamente do FFmpeg4 para funcionar.
+* `wget` - Deve vir instalado em quase qualquer distro, usado pra baixar uns arquivos
+
+## Problemas conhecidos <img width="35rem" alt="ralsei chocada" src="https://github.com/user-attachments/assets/f081e38a-e5a1-4c24-a34e-de28e8c98eb9" />
+
+* Ao carregar um save, você deve notar que seu áudio/música sumiram (cadê meu som???) calma que não é seu PC, pra arrumar isso, vá para sua pastinha de saves: `~/.config/DELTARUNE` e abra seu arquivo de save:
+1. `filech#_0` - Primeiro slot de save no menu
+2. `filech#_1` - Segundo slot de save no menu
+3. `filech#_2` - Terceiro slot de save no menu
+
+Vá para a linha **569/570** (333/334 no Capítulo 1) e mude o `.` para `,` ou vice-versa.
+
+* Controles podem não funcionar
+
+* Um cachorro irritante pode aparecer durante a gameplay

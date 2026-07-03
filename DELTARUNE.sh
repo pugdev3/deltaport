@@ -17,17 +17,17 @@ mkdir -p $SAVEDIR
 cd "$SAVEDIR"
 
 if [ ! -f "$DELTARUNEDIR/assets/game.unx" ]; then
-    echo "DELTARUNE game data not found. Make sure this is run on the folder with the games files, and the patching worked correctly"
+    echo "game.unx do DELTARUNE não encontrado, os patches funcionaram corretamente?"
     exit 1
 fi
 
-# If we are in Ubuntu/Debian, export the specific compatibility libraries folder
-# This will get appended to the $LD_LIBRARY_PATH variable exported by steam-runtime's script.
+# Se a gente está no Ubuntu/Debian, exportar a pasta de bibliotecas de compatibilidade
+# Isso vai ser adicionado a váriavel $LD_LIBRARY_PATH exportada pelo script do runtime da Steam.
 if [ -f "$DELTARUNEDIR/.ubuntu" ]; then
 	export LD_LIBRARY_PATH="$DELTARUNEDIR/lib"
 fi
 
-# Check if trigger files are somehow there and delete them
+# Checar se arquivos de gatilho estão aqui por algum motivo (???) e deletar eles
 if [ -f "$CHAPTERSELECT_FILE" ]; then
 	rm $CHAPTERSELECT_FILE
 fi
@@ -48,7 +48,7 @@ if [ -f "$CHAPTER4_FILE" ]; then
 	rm $CHAPTER4_FILE
 fi
 
-if [ -f "$CHAPTER4_FILE" ]; then
+if [ -f "$CHAPTER5_FILE" ]; then
 	rm $CHAPTER5_FILE
 fi
 
@@ -60,7 +60,7 @@ fi
 
 function run_game {
 	"$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" ./deltarune &
-	# After the first run during the chapter switch, we want to wait a bit so the next process loads before killing the first one.
+	# Depois de rodar o jogo pela primeira vez na seleção de capitulos, a gente quer esperar um poquinho pro próximo processo carregar antes de matar o primeiro
 	if [ $FIRST_RUN == 0 ]; then
 		sleep 4
 	fi
@@ -71,11 +71,11 @@ function run_game {
 	FIRST_RUN=0
 }
 
-# Run the game!
+# Rodar esse jogaço!!!
 cd "$DELTARUNEDIR"
 run_game
 
-# =- All the logic for changing chapters / parsing trigger files -=
+# =- Toda a lógica para mudar de capitulos / Processar arquivos de gatilho -=
 parse_file() {
 	cd "$SAVEDIR"
     if [ "$1" == "$CHAPTERSELECT_FILE" ]; then
@@ -123,7 +123,7 @@ change_chapter() {
 	fi
 }
 
-# Watch the game save directory for trigger files
+# Monitorar pasta de save para arquivos de gatilho
 inotifywait -m $SAVEDIR  |
 	while read filepath operation file; do
 		[[ $operation == *CREATE* ]] && parse_file $file $filepath
