@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FFMPEG4_INSTALLED=0
 HDIFFPATCH_INSTALLED=0
-deps=("hpatchz" "inotifywait" "ffmpeg" "wget")
+deps=("git" "hpatchz" "inotifywait" "ffmpeg" "wget")
 # Internal / to display on screen.
 missing_deps=()
 missing_deps_list=()
@@ -81,7 +81,6 @@ function install_deps() {
             log "Installing rpmfusion for necessary packages"
             sudo dnf install -y "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
         fi
-        sleep 5
         sudo dnf install --allowerasing -y ${missing_deps[*]} compat-ffmpeg4
         install_patcher
         log "Dependencies sucessfully installed :)"
@@ -98,7 +97,8 @@ function install_deps() {
         then
             yay -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4 hdiffpatch-bin
         else
-            sudo pacman -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4
+            # We need base-devel to install AUR packages on Arch
+            sudo pacman -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4 base-devel
             git clone https://aur.archlinux.org/hdiffpatch-bin.git
             cd hdiffpatch-bin
             makepkg -si
@@ -164,13 +164,13 @@ function check_deps() {
         fi
     fi
 
-    if (( ${#missing_deps[@]} != 0 )); then
+    if (( ${#missing_deps_list[@]} != 0 )); then
         log "You're missing the following dependencies: ${missing_deps_list[*]}"
         while true; do
             read -p "Do you want to automatically install them? [y/n]: " yn
             case $yn in
                 [Yy]* ) install_deps; break;;
-                [Nn]* ) break;;
+                [Nn]* ) warn "WARNING: Not installing dependencies may cause issues."; break;;
                 * ) break;;
             esac
         done

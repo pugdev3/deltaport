@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+ARGS=$1
 set -e pipefail
 set -E
 
@@ -6,6 +7,7 @@ DELTARUNEDIR=""
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
 CHAPTERS=5
+STEAMCLOUD=0
 
 VERSION_240_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
 VERSION_241_CHECKSUM="0a448a89c32c802a138621a39ced69db"
@@ -25,6 +27,21 @@ if [ ! -d "$HOME/.local/share/Steam" ]; then
     error "ERROR: You need to have Steam installed in order to run this script."
 fi
 "$SCRIPTDIR/deps.sh"
+
+function steam_cloud_support {
+     if [[ "$STEAMCLOUD" == 1 ]]; then
+            log "Adding Steam Cloud support..."
+            # NOTE: From my observations, Steam Cloud seems to create this directory automatically when syncing saves, but just to make sure:
+            mkdir -p "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
+            cd "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
+            if [[ -d "DELTARUNE" ]]; then
+                rm -r "DELTARUNE"
+            fi
+            ln -s "$HOME/.config/DELTARUNE" "DELTARUNE"
+     fi
+}
+
+if [[ $ARGS == "steamcloud" ]]; then steam_cloud_support && exit 0; fi
 
 function check_version {
    if echo "${VERSION_240_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
@@ -172,6 +189,17 @@ function port_game() {
    for ((i = 1 ; i <= CHAPTERS ; i++)); do
          hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/v$VERSION/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
    done
+
+   while true; do
+        read -p "$(log 'Optionally add Steam Cloud support? [y/n]: ')" yn
+        case $yn in
+            [Yy]* ) STEAMCLOUD=1; break;;
+            [Nn]* ) break;;
+            *) break;;
+            esac
+   done
+
+   steam_cloud_support
 
    echo -e "\e[1;32m SUCCESS! The port script finished. \e[0m"
    log 'To play DELTARUNE, go to Steam -> DELTARUNE -> Properties -> Launch Options -> Put this: "./DELTARUNE.sh" -- %command%'
