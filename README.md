@@ -14,7 +14,7 @@ Flatpak Steam and immutable distros are not supported.
 
 Only available for Linux x86_64
 
-Ei, psiu, fala português? 🇧🇷 **Então veja [a versão PT-BR do deltaport!!](https://github.com/pugdev3/deltaport/tree/main)**
+Ei, psiu, fala português? 🇧🇷 **Então veja [a versão PT-BR do deltaport!!](https://github.com/pugdev3/deltaport/tree/pt-br)**
 
 ## Usage
 > [!IMPORTANT]
