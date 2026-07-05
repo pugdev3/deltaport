@@ -4,6 +4,8 @@ DELTARUNEDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd 
 DELTARUNEPID=""
 SAVEDIR="$HOME/.config/DELTARUNE"
 FIRST_RUN=1
+HIDE_INPUT_DEVICES=0
+HIDE_INPUT_COMMAND=""
 
 CHAPTERSELECT_FILE="deltaport_chapterselect"
 CHAPTER1_FILE="deltaport_chapter1"
@@ -56,10 +58,21 @@ if [ -f "$END_FILE" ]; then
 	rm $END_FILE
 fi
 
+if [[ -f "$DELTARUNEDIR/.hide_input" ]]; then
+		HIDE_INPUT_DEVICES=1
+fi
+
+if [[ $HIDE_INPUT_DEVICES -eq 1 ]]; then
+		# The GMS runner constantly reads the /dev/input for gamepad devices every frame, this uses bubblewrap to hide that directory from the runner
+		# On some devices, like mine, this fixes it erroneously detecting my touchpad / other devices that aren't joysticks as a gamepad, making the game unplayable
+		HIDE_INPUT_COMMAND="bwrap --bind / / --tmpfs /dev/input"
+fi
+
 "$DELTARUNEDIR/.watch" $$ $(sleep 5; pidof inotifywait) &
 
 function run_game {
-	"$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" ./deltarune &
+	# We need to set the numeric locale to en_US because it uses a dot for decimals and GMS requires it.
+	LC_NUMERIC=en_US.UTF-8 "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND ./deltarune &
 	# After the first run during the chapter switch, we want to wait a bit so the next process loads before killing the first one.
 	if [ $FIRST_RUN == 0 ]; then
 		sleep 4

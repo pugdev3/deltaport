@@ -16,7 +16,7 @@ Only available for Linux x86_64
 
 Ei, psiu, fala português? 🇧🇷 **Então veja [a versão PT-BR do deltaport!!](https://github.com/pugdev3/deltaport/tree/pt-br)**
 
-## Usage
+## Usage <img width="25rem" alt="ralsei dummy" src="https://github.com/user-attachments/assets/a270cef6-4ec3-4856-8d18-4df6b297384b" />
 > [!IMPORTANT]
 > Check out [Supported versions](https://github.com/pugdev3/deltaport#supported-versions-) for which versions you can use.
  
@@ -28,6 +28,8 @@ pug@puter ~>  ./port.sh
 Follow the instructions on the screen and then launch the game through Steam or run `DELTARUNE.sh` in the game directory.
 
 This project was tested on Ubuntu 26.04 and Arch Linux.
+
+NOTE: If you have issues with keyboard input (like i did), make sure you have flatpak installed and create a file named `.hide_input` in the game's directory, it should hide all `/dev/input` devices from the runner (although no controllers should work)
 
 https://github.com/user-attachments/assets/9e50df05-e07f-4e7a-8951-ed42dc3346b4
 
@@ -79,6 +81,15 @@ Here is a list of the currently supported versions by the port:
 
 Other versions can be upgraded using the update script + Steam update
 
+## Console borders <img height="50rem" alt="kris and ralsei pushing each other" src="https://github.com/user-attachments/assets/ed1143c7-fd1d-440a-8100-137d2ff2f659" />
+There is optional support for **[NXRUNE](https://gamejolt.com/games/nxrune/629072)**'s borders mod on deltaport that enables console borders (cool dynamic borders around the screen exclusive to consoles) on Linux, especially useful for widescreen users.
+To enable it, type `y` when prompted during the script or run `./port.sh consoleborders` in your terminal application.
+
+Currently it's only available for the latest version: 0.0.244
+
+<img width="800em" alt="demo of deltaport with console borders mod" src="https://github.com/user-attachments/assets/c231df57-94fe-47a3-bf29-080a2b22feb9" />
+
+
 ## How it works <img width="35rem" alt="thinking pug" src="https://github.com/user-attachments/assets/8ce7e9a3-9809-4022-b6bc-95cc2165cab1" />
 
 
@@ -97,7 +108,8 @@ This trigger file is then read by the `DELTARUNE.sh` script which launches the c
 
 The goal here is for it to work almost exactly like the Windows version.
 
-## Dependencies <img width="35rem" alt="susie turning around" src="https://github.com/user-attachments/assets/7e73bb95-805b-4680-a5b1-f113d98cea34" />
+## Dependencies <img width="35rem" alt="bloated susie" src="https://github.com/user-attachments/assets/215a2ccb-1e54-44e6-bd19-253a6524fc41" />
+
 
 A `deps.sh` file is already included in the repo and is used by the the `port.sh` script.
 
@@ -109,20 +121,34 @@ That being said, it is required to have:
 * `ffmpeg4` - Used to play videos on Chapter 3/5, note that GameMaker 2022 LTS requires specifically FFmpeg4 to work.
 * `ffmpeg` - Needed to fix video playback in Chapter 5
 * `wget` - Should be pre-installed in almost any distro, used to download some files.
+* `git` - Used on Arch *btw* to install the AUR package for hdiffpatch
 
 ## Known issues <img width="35rem" alt="shocked ralsei" src="https://github.com/user-attachments/assets/f081e38a-e5a1-4c24-a34e-de28e8c98eb9" />
 
 
-* When loading a save file, you may notice that your music/audio is gone, to fix this, go to your save directory: `~/.config/DELTARUNE` and open your save file:
-1. `filech#_0` - First save slot
-2. `filech#_1` - Second save slot
-3. `filech#_2` - Third save slot
+~~* When loading a save file, you may notice that your music/audio is gone, to fix this, go to your save directory: `~/.config/DELTARUNE` and open your save file:~~
+~~1. `filech#_0` - First save slot~~
+~~2. `filech#_1` - Second save slot~~
+~~3. `filech#_2` - Third save slot~~
 
-Go to line **569/570** (333/334 on Chapter 1) and change the `.` to a `,` or vice-versa.
+~~Go to line **569/570** (333/334 on Chapter 1) and change the `.` to a `,` or vice-versa.~~ 
+(Issue has been fixed in latest commit!!!)
 
 * Controller input may not work
 
 * An annoying dog may appear during gameplay
+
+## Credits <img width="25rem" alt="cute smile" src="https://github.com/user-attachments/assets/1343f28d-d8cc-40b6-864e-2bd9236814b1" />
+
+[Toby Fox](https://twitter.com/tobyfox) - Creator of this awesome game
+
+[UndertaleModTool](https://github.com/UnderminersTeam/UndertaleModTool) - The goats who created this amazing tool that made this port possible.
+
+[Flibitijibibo](https://flibitijibibo.com/) - This guy with the name I can't pronounce that provided the FFmpeg4 libs for initial video playback support (still used in Ubuntu)
+
+[Iruzz](https://github.com/IruzzArcana) - For the borders mod used in this port
+
+(Other people I may have forgot to put here)
 
 [^1]: The DELTARUNE logo and characters are copyright of Toby Fox, being used under fair use.
 [^2]: DELTARUNE is a trademark of Royal Sciences LLC

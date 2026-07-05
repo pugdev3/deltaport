@@ -8,6 +8,7 @@ SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
 CHAPTERS=5
 STEAMCLOUD=0
+CONSOLEBORDERS_MOD=0
 
 VERSION_240_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
 VERSION_241_CHECKSUM="0a448a89c32c802a138621a39ced69db"
@@ -39,6 +40,22 @@ function steam_cloud_support {
             fi
             ln -s "$HOME/.config/DELTARUNE" "DELTARUNE"
      fi
+}
+
+function consoleborders_mod_support {
+    if [[ $ARGS == "consoleborders" ]]; then
+        CONSOLEBORDERS_MOD=1
+        select_dir
+    fi
+    if [[ "$CONSOLEBORDERS_MOD" == 1 ]]; then
+            log "Applying the 'consoleborders' mod patches..."
+            hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/consoleborders/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
+            for ((i = 1 ; i <= CHAPTERS ; i++)); do
+                hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/consoleborders/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
+            done
+            log "Mod patches sucessfully applied :D"
+            if [[ $ARGS == "consoleborders" ]]; then exit 0; fi
+    fi
 }
 
 if [[ $ARGS == "steamcloud" ]]; then steam_cloud_support && exit 0; fi
@@ -191,7 +208,7 @@ function port_game() {
    done
 
    while true; do
-        read -p "$(log 'Optionally add Steam Cloud support? [y/n]: ')" yn
+        read -p "$(log 'Optionally add Steam Cloud saves support? [y/n]: ')" yn
         case $yn in
             [Yy]* ) STEAMCLOUD=1; break;;
             [Nn]* ) break;;
@@ -199,7 +216,20 @@ function port_game() {
             esac
    done
 
+   # Only the latest version is supported!
+   if [[ "$VERSION" == "0.0.244" ]]; then
+        while true; do
+            read -p "$(log 'Optionally add the Console Borders mod? [y/n]: ')" yn
+            case $yn in
+                [Yy]* ) CONSOLEBORDERS_MOD=1; break;;
+                [Nn]* ) log "If you change your mind, run './port.sh consoleborders' to add them!!"; break;;
+                *) break;;
+            esac
+        done
+   fi
+
    steam_cloud_support
+   consoleborders_mod_support
 
    echo -e "\e[1;32m SUCCESS! The port script finished. \e[0m"
    log 'To play DELTARUNE, go to Steam -> DELTARUNE -> Properties -> Launch Options -> Put this: "./DELTARUNE.sh" -- %command%'
@@ -229,9 +259,11 @@ function select_dir() {
    fi
 
    DELTARUNEDIR=${path%/}
+   if [[ $ARGS == "consoleborders" ]]; then return 0; fi
    port_game
 }
 
+if [[ $ARGS == "consoleborders" ]]; then consoleborders_mod_support && exit 0; fi
 
 log "Welcome to the unofficial DELTARUNE Linux port."
 log "This is the port for version(s): 0.0.240-44"
