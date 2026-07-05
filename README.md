@@ -19,7 +19,7 @@ O port utiliza a [tradução feita por eles](https://github.com/teiarruma/deltar
 
 Créditos ao TEIARRUMA pela tradução maravilhosa e ao Tobias Raposo por ter criado esse jogaço :)
 
-## Como usar
+## Como usar <img width="25rem" alt="ralsei boneco" src="https://github.com/user-attachments/assets/a270cef6-4ec3-4856-8d18-4df6b297384b" />
 > Você **precisa** da versão **1.40** para usar esse port, veja um pouco abaixo como conseguir essa versão.
  
 Baixe o último [lançamento no Github](https://github.com/pugdev3/deltaport/releases/latest), extraia o arquivo, e dentro da pasta, clique duas vezes no `port.sh` ou rode no seu terminal:
@@ -27,9 +27,11 @@ Baixe o último [lançamento no Github](https://github.com/pugdev3/deltaport/rel
 ```shell
 pug@computaria ~>  ./port.sh
 ```
-Certifique-se que você baixou a versão com `_pt_br` no nome ou se não você está usando a versão em inglês. E também que o jogo está no diretório correto: `~/.local/share/Steam/steamapps/common/DELTARUNE`
+Certifique-se que você baixou a versão com `-pt_br` no nome ou se não você está usando a versão em inglês. E também que o jogo está no diretório correto: `~/.local/share/Steam/steamapps/common/DELTARUNE`
 
 Depois disso siga as instruções na tela e então rode o jogo pela Steam ou execute  `DELTARUNE.sh` na pasta do jogo.
+
+NOTA: Se você tiver problemas com o teclado sendo reconhecido como controle (eu tive), tenha o flatpak instalado e crie um arquivo chamado `.esconder_input` na pasta do jogo, isso deve esconder todos os arquivos da pasta `/dev/input` pro runner (porém os controles não vão funcionar provavelmente)
 
 Esse projeto foi testado no Arch Linux com KDE Plasma.
 
@@ -99,7 +101,7 @@ Para a gente conseguir modificar o código do jogo, são usados patches binário
 
 Esses patches apenas contém a diferença entre os dois arquivos, então você precisa ter um `data.win` (arquivo do jogo) que seja compátivel com o patch pra funcionar.
 
-## Dependências <img width="35rem" alt="susie virada" src="https://github.com/user-attachments/assets/7e73bb95-805b-4680-a5b1-f113d98cea34" />
+## Dependências <img width="35rem" alt="susie grande" src="https://github.com/user-attachments/assets/215a2ccb-1e54-44e6-bd19-253a6524fc41" />
 
 O arquivo `deps.sh` é incluído no repositório e é usado pelo script principal: `port.sh`
 
@@ -109,7 +111,8 @@ Dito isso, é preciso ter:
 * `hpatchz` - De [HDiffPatch](https://github.com/sisong/HDiffPatch), isso é usado para aplicar as patches no jogo (antigamente era usado o xdelta3)
 * `inotifywait` - Usado para observar a pasta de saves por arquivos de gatilho, na maioria das distros o nome do pacote é `inotify-tools`
 * `ffmpeg4` - Usado para reproduzir vídeos nos capítulo 3, nota que o GameMaker 2022 LTS precisa especificamente do FFmpeg4 para funcionar.
-* `wget` - Deve vir instalado em quase qualquer distro, usado pra baixar uns arquivos
+* `wget` - Deve vir instalado em quase qualquer distro, usado pra baixar uns arquivos.
+* `git` - Usado no Arch *btw* para instalar o pacote AUR pro hdiffpatch
 
 ## Problemas conhecidos <img width="35rem" alt="ralsei chocada" src="https://github.com/user-attachments/assets/f081e38a-e5a1-4c24-a34e-de28e8c98eb9" />
 

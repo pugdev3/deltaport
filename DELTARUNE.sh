@@ -4,6 +4,8 @@ DELTARUNEDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd 
 DELTARUNEPID=""
 SAVEDIR="$HOME/.config/DELTARUNE"
 FIRST_RUN=1
+HIDE_INPUT_DEVICES=0
+HIDE_INPUT_COMMAND=""
 
 CHAPTERSELECT_FILE="deltaport_chapterselect"
 CHAPTER1_FILE="deltaport_chapter1"
@@ -56,10 +58,21 @@ if [ -f "$END_FILE" ]; then
 	rm $END_FILE
 fi
 
+if [[ -f "$DELTARUNEDIR/.esconder_input" ]]; then
+		HIDE_INPUT_DEVICES=1
+fi
+
+if [[ $HIDE_INPUT_DEVICES -eq 1 ]]; then
+		# o runner do GameMaker constantemente lê a pasta /dev/input para dispositivos de input, isso aqui usa o bubblewrap para esconder essa pasta do runner
+		# Em alguns dispositivos, como o meu, isso arruma ele erroneamente detectando o meu Touchpad / outros dispositivos como controle, deixando o jogo injogável
+		HIDE_INPUT_COMMAND="bwrap --bind / / --tmpfs /dev/input"
+fi
+
 "$DELTARUNEDIR/.watch" $$ $(sleep 5; pidof inotifywait) &
 
 function run_game {
-	"$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" ./deltarune &
+	# A gente precisa setar o 'locale' dos números do sistema pro sistema americano porque eles usam ponto pra decimais por algum motivo??? e o GameMaker espera esse formato.
+	LC_NUMERIC=en_US.UTF-8 "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND ./deltarune &
 	# Depois de rodar o jogo pela primeira vez na seleção de capitulos, a gente quer esperar um poquinho pro próximo processo carregar antes de matar o primeiro
 	if [ $FIRST_RUN == 0 ]; then
 		sleep 4

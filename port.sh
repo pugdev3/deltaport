@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+ARGS=$1
 set -e pipefail
 set -E
 
@@ -21,6 +22,21 @@ if [ ! -d "$HOME/.local/share/Steam" ]; then
     error "ERRO: Você precisa da Steam instalada no seu sistema pra rodar esse script."
 fi
 "$SCRIPTDIR/deps.sh"
+
+function steam_cloud_support {
+     if [[ "$STEAMCLOUD" == 1 ]]; then
+            log "Adicionando suporte ao Steam Cloud..."
+            # NOTA: Pelo o que eu vi, a Steam Cloud parece criar esse diretório automaticamente ao sincronizar saves, mas só pra ter certeza
+            mkdir -p "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
+            cd "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
+            if [[ -d "DELTARUNE" ]]; then
+                rm -r "DELTARUNE"
+            fi
+            ln -s "$HOME/.config/DELTARUNE" "DELTARUNE"
+     fi
+}
+
+if [[ $ARGS == "steamcloud" ]]; then steam_cloud_support && exit 0; fi
 
 function check_version {
    if echo "${VERSION_140_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
@@ -156,6 +172,17 @@ function port_game() {
 
    # Atualizar o hash MD5 (valor númerico que o jogo usa pra checar se está atualizado) pras versões de Linux
    hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/pt_br/05-atualizar_md5.hpatch" "$DELTARUNEDIR/assets/game.unx"
+
+    while true; do
+        read -p "$(log 'Adicionar suporte opcional aos saves na Steam Cloud? [S/n]: ')" sn
+        case $sn in
+            [Ss]* ) STEAMCLOUD=1; break;;
+            [Nn]* ) break;;
+            *) break;;
+            esac
+   done
+
+   steam_cloud_support
 
    echo -e "\e[1;32m SUCESSO! O script do port terminou. \e[0m"
    log "Antes de mais nada, mova o diretório para a localização correta (instruções no Github)"
