@@ -4,7 +4,7 @@
 > [!NOTE]
 > This project is NOT affiliated with nor endorsed by Toby Fox, Fangamer, YoYo Games Ltd or Opera Norway AS.
 
-An unofficial (attempt) of porting DELTARUNE[^2] to Linux
+An unofficial attempt of porting DELTARUNE[^2] to Linux
 
 This was originally made as a learning project for personal use, the game works perfectly fine under Proton and you should probably be using that instead.
 
@@ -30,6 +30,8 @@ Follow the instructions on the screen and then launch the game through Steam or 
 This project was tested on Ubuntu 26.04 and Arch Linux.
 
 NOTE: If you have issues with keyboard input (like i did), make sure you have flatpak installed and create a file named `.hide_input` in the game's directory, it should hide all `/dev/input` devices from the runner (although no controllers should work)
+
+Also check out the [Console borders mod support](https://github.com/pugdev3/deltaport#console-borders-) if you are interested.
 
 https://github.com/user-attachments/assets/9e50df05-e07f-4e7a-8951-ed42dc3346b4
 
@@ -75,9 +77,9 @@ Here is a list of the currently supported versions by the port:
 | [v1.05 (deltarune105 beta)](https://bsky.app/profile/undertale.com/post/3lxbfrqodwc2l) | `5d3e158dbe6888fbf24471019fbde3c9` | 26 August 2025 | [v0.01](https://github.com/pugdev3/deltaport/releases/download/v0.01/deltaport-v0.01.tar.xz)        
 | [v0.0.240 (Chapter 5 release)](https://steamdb.info/patchnotes/23736632/) | `f3dabe6444829688fd7fbaa68f78794f` | 24 June 2026 | [v0.02](https://github.com/pugdev3/deltaport/releases/download/v0.02/deltaport-v0.02.tar.xz)/[v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)          
 | [v0.0.241](https://steamdb.info/patchnotes/23909557/) | `0a448a89c32c802a138621a39ced69db` | 25 June 2026 | [v0.02](https://github.com/pugdev3/deltaport/releases/download/v0.02/deltaport-v0.02.tar.xz)/[v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
-| [v0.0.242](https://steamdb.info/patchnotes/23942272/) | `cc76c5efeb1b5fefd1822ceb1340ca10` | 27 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
-| [v0.0.243](https://steamdb.info/patchnotes/23962447/) | `359adb2db26d7e902f4c26b40e9b58ae` | 29 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)     
-| [v0.0.244](https://bsky.app/profile/undertale.com/post/3mpkv5vypm22a) | `ddedbbd10ff129b49c64dbefaa763c6a` | 1 July 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)
+| [v0.0.242](https://steamdb.info/patchnotes/23942272/) | `cc76c5efeb1b5fefd1822ceb1340ca10` | 27 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)    
+| [v0.0.243](https://steamdb.info/patchnotes/23962447/) | `359adb2db26d7e902f4c26b40e9b58ae` | 29 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)   
+| [v0.0.244](https://bsky.app/profile/undertale.com/post/3mpkv5vypm22a) | `ddedbbd10ff129b49c64dbefaa763c6a` | 1 July 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)
 
 Other versions can be upgraded using the update script + Steam update
 
