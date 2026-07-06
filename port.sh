@@ -32,6 +32,8 @@ fi
 function steam_cloud_support {
      if [[ "$STEAMCLOUD" == 1 ]]; then
             log "Adding Steam Cloud support..."
+            # Needed for the symlink to work
+            mkdir -p "$HOME/.config/DELTARUNE"
             # NOTE: From my observations, Steam Cloud seems to create this directory automatically when syncing saves, but just to make sure:
             mkdir -p "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
             cd "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
@@ -58,7 +60,7 @@ function consoleborders_mod_support {
     fi
 }
 
-if [[ $ARGS == "steamcloud" ]]; then steam_cloud_support && exit 0; fi
+if [[ $ARGS == "steamcloud" ]]; then STEAMCLOUD=1; steam_cloud_support && exit 0; fi
 
 function check_version {
    if echo "${VERSION_240_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then

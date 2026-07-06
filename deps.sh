@@ -157,13 +157,6 @@ function check_deps() {
         fi
     done
 
-    if command -v apt 2>&1 >/dev/null; then
-        if [[ $FFMPEG4_INSTALLED == 0 ]]; then
-            log "FFmpeg4 missing and apt installed, assuming Ubuntu/Debian and downloading libs..."
-            install_ffmpeg4
-        fi
-    fi
-
     if (( ${#missing_deps_list[@]} != 0 )); then
         log "You're missing the following dependencies: ${missing_deps_list[*]}"
         while true; do
@@ -174,6 +167,13 @@ function check_deps() {
                 * ) break;;
             esac
         done
+   else
+        if command -v apt 2>&1 >/dev/null; then
+            if [[ $FFMPEG4_INSTALLED == 0 ]]; then
+                log "FFmpeg4 missing and apt installed, assuming Ubuntu/Debian and downloading libs..."
+                install_ffmpeg4
+            fi
+        fi
    fi
 }
 
