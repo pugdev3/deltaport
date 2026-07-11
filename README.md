@@ -70,7 +70,7 @@ Depois disso, pressione enter, e deve começar a baixar o jogo.
 <img width="800em" alt="Steam com aba de console e gerenciador de arquivos Dolphin" src="https://github.com/user-attachments/assets/368d92f0-fff8-434f-807e-1fc175a87959" />
 
 
-Na captura de tela você deve ter percebido que no caminho do jogo: `\steamapps\content\app_1671210\depot_1671212` a Steam coloca `\` no meio por algum motivo (virou Windows agora steam??), só mudar para `/` e abrir no seu explorador de arquivos de escolha, você deve ter a versão 1.04 baixada no seu PC!
+Na captura de tela você deve ter percebido que no caminho do jogo: `\steamapps\content\app_1671210\depot_1671212` a Steam coloca `\` no meio por algum motivo (virou Windows agora steam??), só mudar para `/` e abrir no seu explorador de arquivos de escolha, você deve ter a versão 0.0.247 baixada no seu PC!
 
 Agora, se você quer abrir o jogo pela Steam, primeiro você tem que instalar o jogo pela Steam, depois abra `~/.local/share/Steam/steamapps/common` e apague a pasta do DELTARUNE e substitua pela pastinha `depot_1671212` que a gente baixou usando o comando
 
