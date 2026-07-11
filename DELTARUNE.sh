@@ -6,6 +6,7 @@ SAVEDIR="$HOME/.config/DELTARUNE"
 FIRST_RUN=1
 HIDE_INPUT_DEVICES=0
 HIDE_INPUT_COMMAND=""
+GAME_WATCH=0
 
 CHAPTERSELECT_FILE="deltaport_chapterselect"
 CHAPTER1_FILE="deltaport_chapter1"
@@ -58,6 +59,10 @@ if [ -f "$END_FILE" ]; then
 	rm $END_FILE
 fi
 
+if [ -f "$DELTARUNEDIR/.saida_lock" ]; then
+	rm "$DELTARUNEDIR/.saida_lock"
+fi
+
 if [[ -f "$DELTARUNEDIR/.esconder_input" ]]; then
 		HIDE_INPUT_DEVICES=1
 fi
@@ -68,11 +73,34 @@ if [[ $HIDE_INPUT_DEVICES -eq 1 ]]; then
 		HIDE_INPUT_COMMAND="bwrap --bind / / --tmpfs /dev/input"
 fi
 
-"$DELTARUNEDIR/.watch" $$ $(sleep 5; pidof inotifywait) &
+function exit_game {
+		# Prevenir que rode duas vezes
+		if [[ -f ".saida_lock" ]]; then exit 0; fi
+		touch .saida_lock
+		echo "Obrigado por jogar, espero que você tenha se divertido :D"
+		if kill -0 $(pidof inotifywait) 2>/dev/null; then
+			kill -9 $(pidof inotifywait)
+		fi
+		if kill -0 $(pidof deltarune) 2>/dev/null; then
+			kill -9 $(pidof deltarune)
+		fi
+		exit 0
+}
+
+trap 'exit_game' SIGINT
+
+function watch_game {
+	while true; do
+		sleep 4
+		if [[ "$(pidof deltarune)" == "" ]]; then
+				exit_game
+		fi
+	done
+}
 
 function run_game {
-	# A gente precisa setar o 'locale' dos números do sistema pro sistema americano porque eles usam ponto pra decimais por algum motivo??? e o GameMaker espera esse formato.
-	LC_NUMERIC=en_US.UTF-8 "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND ./deltarune &
+	# Setar o locale do sistema pro locale genérico 'C' porque eles usam ponto pra decimais e o GameMaker espera esse formato.
+	LC_ALL=C "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND ./deltarune &
 	# Depois de rodar o jogo pela primeira vez na seleção de capitulos, a gente quer esperar um poquinho pro próximo processo carregar antes de matar o primeiro
 	if [ $FIRST_RUN == 0 ]; then
 		sleep 4
@@ -82,6 +110,10 @@ function run_game {
 	fi
 	DELTARUNEPID=$(sleep 1; pidof deltarune)
 	FIRST_RUN=0
+	if [[ $GAME_WATCH -eq 0 ]]; then
+		watch_game &
+	fi
+	GAME_WATCH=1
 }
 
 # Rodar esse jogaço!!!

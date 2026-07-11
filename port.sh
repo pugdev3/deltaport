@@ -6,9 +6,12 @@ set -E
 DELTARUNEDIR=""
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
-CHAPTERS=4
+LATEST_VERSION="0.0.247"
+CHAPTERS=5
+STEAMCLOUD=0
+NXRUNE_MOD=0
 
-VERSION_140_CHECKSUM="9d1fea9de81219ea7304f32f1ae7a878"
+VERSION_247_CHECKSUM="908643b7593b000f5b6c61bb484d086a"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -26,25 +29,58 @@ fi
 function steam_cloud_support {
      if [[ "$STEAMCLOUD" == 1 ]]; then
             log "Adicionando suporte ao Steam Cloud..."
+            # Necessário para ligação simbólica funcionar
+            mkdir -p "$HOME/.config/DELTARUNE"
+
             # NOTA: Pelo o que eu vi, a Steam Cloud parece criar esse diretório automaticamente ao sincronizar saves, mas só pra ter certeza
             mkdir -p "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
+
+            # NOTA 2: Outro diretório onde a Steam parece ler saves
+            mkdir -p "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/AppData/Local/"
+
             cd "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
             if [[ -d "DELTARUNE" ]]; then
                 rm -r "DELTARUNE"
             fi
             ln -s "$HOME/.config/DELTARUNE" "DELTARUNE"
+
+            cd "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/AppData/Local"
+            if [[ -d "DELTARUNE" ]]; then
+                rm -r "DELTARUNE"
+            fi
+            ln -s "$HOME/.config/DELTARUNE" "DELTARUNE"
+
+            log "Suporte a Steam Cloud adicionado! Por favor não apague a pasta '~/.config/DELTARUNE' antes de rodar o jogo porque isso pode quebrar coisas"
      fi
 }
 
-if [[ $ARGS == "steamcloud" ]]; then steam_cloud_support && exit 0; fi
+function nxrune_mod_support {
+    if [[ $ARGS == "nxrune" && $NXRUNE_MOD -eq 0 ]]; then
+        NXRUNE_MOD=1
+        find_deltarune_dir
+    fi
+    if [[ $NXRUNE_MOD -eq 1 ]]; then
+            log "Aplicando as patches do mod 'nxrune'"
+            cat "$SCRIPTDIR"
+            hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/00-telainicial-bordas.hpatch" "$DELTARUNEDIR/assets/game.unx"
+            for ((i = 1 ; i <= CHAPTERS - 1 ; i++)); do
+                hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/nxrune/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
+            done
+            hpatchz -f "$DELTARUNEDIR/chapter5_linux/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/05-capitulo_05-bordas.hpatch" "$DELTARUNEDIR/chapter5_linux/assets/game.unx"
+            log "Patches do mod aplicados com sucesso :D"
+    fi
+}
+
+if [[ $ARGS == "steamcloud" ]]; then STEAMCLOUD=1; steam_cloud_support && exit 0; fi
 
 function check_version {
-   if echo "${VERSION_140_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="1.40"
+   if echo "${VERSION_247_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.247"
    fi
 }
 
 function port_game() {
+   if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support && exit 0; fi
    echo ""
 
     if [[ -f "$DELTARUNEDIR/DELTARUNE.sh" ]]; then
@@ -64,11 +100,11 @@ function port_game() {
    check_version
 
    if [[ "$VERSION" == "" ]]; then
-        warn "AVISO: Não foi possivel identificar a versão. Tenta verificar a integridade dos arquivos na Steam. Lembrando que você precisa da versão 1.40"
+        warn "AVISO: Não foi possivel identificar a versão. Tenta verificar a integridade dos arquivos na Steam. Lembrando que você precisa da versão $LATEST_VERSION"
         while true; do
             read -p "Continuar mesmo assim? [S/n]: " sn
             case $sn in
-                [Ss]* ) log "Usando a última versão disponível" && VERSION="1.40"; break;;
+                [Ss]* ) log "Usando a última versão disponível" && VERSION="$LATEST_VERSION"; break;;
                 [Nn]* ) exit 1; break;;
                 * ) exit 1; break;;
 		    esac
@@ -102,7 +138,6 @@ function port_game() {
    cp "$SCRIPTDIR/DELTARUNE.sh" .
    cp "$SCRIPTDIR/files/options.ini" .
    cp "$SCRIPTDIR/icon.png" .
-   cp "$SCRIPTDIR/.watch" .
     if [ -f "$SCRIPTDIR/.ubuntu" ]; then
         cp "$SCRIPTDIR/.ubuntu" .
         cp -r "$SCRIPTDIR/lib" .
@@ -163,15 +198,29 @@ function port_game() {
 
    log "Aplicando o patch (modificação) dos arquivos do jogo..."
 
-   hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/pt_br/00-telainicial_pt_br.hpatch" "$DELTARUNEDIR/assets/game.unx"
+   hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/pt_br/00-telainicial-pt_br.hpatch" "$DELTARUNEDIR/assets/game.unx"
    hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/deltaport/00-telainicial.hpatch" "$DELTARUNEDIR/assets/game.unx"
-   for ((i = 1 ; i <= CHAPTERS ; i++)); do
+   for ((i = 1 ; i <= CHAPTERS - 1 ; i++)); do
          hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/v$VERSION/pt_br/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
          hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/v$VERSION/deltaport/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
    done
 
+   # deltaport suporta os 5 capítulos, pt-br apenas 4
+   hpatchz -f "$DELTARUNEDIR/chapter5_linux/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/deltaport/05-capitulo_05.hpatch" "$DELTARUNEDIR/chapter5_linux/assets/game.unx"
+
    # Atualizar o hash MD5 (valor númerico que o jogo usa pra checar se está atualizado) pras versões de Linux
-   hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/pt_br/05-atualizar_md5.hpatch" "$DELTARUNEDIR/assets/game.unx"
+   # hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/pt_br/05-atualizar_md5.hpatch" "$DELTARUNEDIR/assets/game.unx"
+
+    if [[ "$VERSION" == $LATEST_VERSION ]]; then
+        while true; do
+            read -p "$(log 'Adicionar opcionalmente o mod de bordas de Console? (NXRUNE) [S/n]: ')" sn
+            case $sn in
+                [Ss]* ) NXRUNE_MOD=1; break;;
+                [Nn]* ) log "Se você mudar de ideia, só rodar './port.sh nxrune' para adicionar o mod!"; break;;
+                *) break;;
+            esac
+        done
+   fi
 
     while true; do
         read -p "$(log 'Adicionar suporte opcional aos saves na Steam Cloud? [S/n]: ')" sn
@@ -182,6 +231,7 @@ function port_game() {
             esac
    done
 
+   nxrune_mod_support
    steam_cloud_support
 
    echo -e "\e[1;32m SUCESSO! O script do port terminou. \e[0m"
@@ -216,23 +266,28 @@ function select_dir() {
    port_game
 }
 
+find_deltarune_dir() {
+        if [ -d "$HOME/.local/share/Steam/steamapps/common/DELTARUNE" ]; then
+        DELTARUNEDIR="$HOME/.local/share/Steam/steamapps/common/DELTARUNE"
+        log "Foi detectado uma instalação do DELTARUNE em: $DELTARUNEDIR."
+        while true; do
+            read -p "Isso está correto? [S/n]: " sn
+            case $sn in
+                [Ss]* ) port_game; break;;
+                [Nn]* ) select_dir; break;;
+                * ) select_dir; break;;
+                esac
+            done
+    else
+        select_dir
+    fi
+}
+
+if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support; fi
 
 log "Bem-vindo ao port não oficial do DELTARUNE para Linux :D (versão PT-BR)"
-log "Para portar o jogo, você vai precisar da versão 1.40 em específico, dê uma olhada no Github para saber como conseguir essa versão."
+log "Para portar o jogo, você vai precisar da versão $LATEST_VERSION em específico, dê uma olhada no Github para saber como conseguir essa versão."
 log "Além disso, você vai precisar ter uma cópia do jogo pra isso funcionar, já que nada é incluído aqui por design."
 echo ""
 
-if [ -d "$HOME/.local/share/Steam/steamapps/common/DELTARUNE" ]; then
-	DELTARUNEDIR="$HOME/.local/share/Steam/steamapps/common/DELTARUNE"
-	log "Foi detectado uma instalação do DELTARUNE em: $DELTARUNEDIR."
-	while true; do
-		read -p "Isso está correto? [S/n]: " sn
-		case $sn in
-			[Ss]* ) port_game; break;;
-			[Nn]* ) select_dir; break;;
-			* ) select_dir; break;;
-		    esac
-		done
-else
-	select_dir
-fi
+find_deltarune_dir
