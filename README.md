@@ -80,20 +80,19 @@ Here is a list of the currently supported versions by the port:
 | [v0.0.242](https://steamdb.info/patchnotes/23942272/) | `cc76c5efeb1b5fefd1822ceb1340ca10` | 27 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)    
 | [v0.0.243](https://steamdb.info/patchnotes/23962447/) | `359adb2db26d7e902f4c26b40e9b58ae` | 29 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)   
 | [v0.0.244](https://bsky.app/profile/undertale.com/post/3mpkv5vypm22a) | `ddedbbd10ff129b49c64dbefaa763c6a` | 1 July 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)
+| [v0.0.247](https://steamdb.info/patchnotes/24122389/) | `908643b7593b000f5b6c61bb484d086a` | 9 July 2026 | [v0.05](https://github.com/pugdev3/deltaport/releases/download/v0.05/deltaport-v0.05.tar.gz)
 
 Other versions can be upgraded using the update script + Steam update
 
 ## Console borders <img height="50rem" alt="kris and ralsei pushing each other" src="https://github.com/user-attachments/assets/ed1143c7-fd1d-440a-8100-137d2ff2f659" />
 There is optional support for **[NXRUNE](https://gamejolt.com/games/nxrune/629072)**'s borders mod on deltaport that enables console borders (cool dynamic borders around the screen exclusive to consoles) on Linux, especially useful for widescreen users.
-To enable it, type `y` when prompted during the script or run `./port.sh consoleborders` in your terminal application.
+To enable it, type `y` when prompted during the script or run `./port.sh nxrune` in your terminal application.
 
-Currently it's only available for the latest version: 0.0.244
+Currently it's only available for versions: 0.0.244/0.0.247
 
 <img width="800em" alt="demo of deltaport with console borders mod" src="https://github.com/user-attachments/assets/c231df57-94fe-47a3-bf29-080a2b22feb9" />
 
-
 ## How it works <img width="35rem" alt="thinking pug" src="https://github.com/user-attachments/assets/8ce7e9a3-9809-4022-b6bc-95cc2165cab1" />
-
 
 As GameMaker: Studio exports game code as bytecode instead of native code, we're able to run the game in any platform as long as we have a compatible runner (The GMS runner)
 
@@ -127,14 +126,7 @@ That being said, it is required to have:
 
 ## Known issues <img width="35rem" alt="shocked ralsei" src="https://github.com/user-attachments/assets/f081e38a-e5a1-4c24-a34e-de28e8c98eb9" />
 
-
-~~* When loading a save file, you may notice that your music/audio is gone, to fix this, go to your save directory: `~/.config/DELTARUNE` and open your save file:~~
-~~1. `filech#_0` - First save slot~~
-~~2. `filech#_1` - Second save slot~~
-~~3. `filech#_2` - Third save slot~~
-
-~~Go to line **569/570** (333/334 on Chapter 1) and change the `.` to a `,` or vice-versa.~~ 
-(Issue has been fixed in latest commit!!!)
+* If you have a older version of deltaport and your music/audio is gone, go to your save directory: `~/.config/DELTARUNE` and change line **569/570** from a "," to a "."
 
 * Controller input may not work
 
@@ -146,7 +138,7 @@ That being said, it is required to have:
 
 [UndertaleModTool](https://github.com/UnderminersTeam/UndertaleModTool) - The goats who created this amazing tool that made this port possible.
 
-[Flibitijibibo](https://flibitijibibo.com/) - This guy with the name I can't pronounce that provided the FFmpeg4 libs for initial video playback support (still used in Ubuntu)
+[Flibitijibibo](https://flibitijibibo.com/) - This guy with the name I can't pronounce that provided the FFmpeg4 libs for initial video playback support
 
 [Iruzz](https://github.com/IruzzArcana) - For the borders mod used in this port
 

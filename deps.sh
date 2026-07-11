@@ -109,7 +109,7 @@ function install_deps() {
             yay -Sy --noconfirm ${missing_deps[*]} hdiffpatch-bin
         else
             # We need base-devel to install AUR packages on Arch
-            missing_deps+=("base-devel")
+            missing_deps+=("base-devel git")
             sudo pacman -Sy --noconfirm ${missing_deps[*]}
             git clone https://aur.archlinux.org/hdiffpatch-bin.git
             cd hdiffpatch-bin
