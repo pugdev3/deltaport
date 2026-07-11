@@ -60,6 +60,8 @@ install_ffmpeg4() {
     rm ffmpeg4.tar.gz
 }
 
+if [[ $ARGS == "ffmpeg4" ]]; then FFMPEG4_INSTALLED=0; install_ffmpeg4 && exit 0; fi
+
 function install_deps() {
     if [[ -f /etc/os-release ]]; then
         source /etc/os-release
