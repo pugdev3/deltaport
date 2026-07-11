@@ -61,12 +61,13 @@ function nxrune_mod_support {
     fi
     if [[ $NXRUNE_MOD -eq 1 ]]; then
             log "Aplicando as patches do mod 'nxrune'"
-            cat "$SCRIPTDIR"
             hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/00-telainicial-bordas.hpatch" "$DELTARUNEDIR/assets/game.unx"
             for ((i = 1 ; i <= CHAPTERS - 1 ; i++)); do
                 hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/nxrune/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
             done
             hpatchz -f "$DELTARUNEDIR/chapter5_linux/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/05-capitulo_05-bordas.hpatch" "$DELTARUNEDIR/chapter5_linux/assets/game.unx"
+            # Atualizar o hash MD5 (valor númerico que o jogo usa pra checar se está atualizado) pra versão com bordas
+            hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/06-atualizar_md5.hpatch" "$DELTARUNEDIR/assets/game.unx"
             log "Patches do mod aplicados com sucesso :D"
     fi
 }
@@ -209,7 +210,7 @@ function port_game() {
    hpatchz -f "$DELTARUNEDIR/chapter5_linux/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/deltaport/05-capitulo_05.hpatch" "$DELTARUNEDIR/chapter5_linux/assets/game.unx"
 
    # Atualizar o hash MD5 (valor númerico que o jogo usa pra checar se está atualizado) pras versões de Linux
-   # hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/pt_br/05-atualizar_md5.hpatch" "$DELTARUNEDIR/assets/game.unx"
+   hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/pt_br/05-atualizar_md5.hpatch" "$DELTARUNEDIR/assets/game.unx"
 
     if [[ "$VERSION" == $LATEST_VERSION ]]; then
         while true; do
