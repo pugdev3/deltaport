@@ -112,7 +112,7 @@ if [[ -f "$SCRIPTDIR/.ubuntu" && ! -f ".ubuntu" ]]; then
     cp "$SCRIPTDIR/.ubuntu" .
 fi
 if [[ ! -d "lib" && -f ".ubuntu" && ! -d "$SCRIPTDIR/lib" ]]; then
-        "$SCRIPTDIR/deps.sh" ffmpeg4
+    "$SCRIPTDIR/deps.sh" ffmpeg4
 fi
 if [[ ! -d "lib" && -f ".ubuntu" ]]; then
     cp "$SCRIPTDIR/lib" .
