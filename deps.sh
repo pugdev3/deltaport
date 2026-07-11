@@ -56,7 +56,7 @@ install_ffmpeg4() {
     touch .ubuntu
     # Download ffmpeg4 libs on Ubuntu for video playback compatibility
     log "Downloading ffmpeg4 libraries..."
-    wget "" -O ffmpeg4.tar.gz
+    wget "https://github.com/pugdev3/static-ffmpeg4/raw/refs/heads/main/static-ffmpeg.tar.gz" -O ffmpeg4.tar.gz
     tar -xvf ffmpeg4.tar.gz
     rm ffmpeg4.tar.gz
 }
