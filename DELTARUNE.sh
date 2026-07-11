@@ -6,6 +6,7 @@ SAVEDIR="$HOME/.config/DELTARUNE"
 FIRST_RUN=1
 HIDE_INPUT_DEVICES=0
 HIDE_INPUT_COMMAND=""
+GAME_WATCH=0
 
 CHAPTERSELECT_FILE="deltaport_chapterselect"
 CHAPTER1_FILE="deltaport_chapter1"
@@ -58,6 +59,10 @@ if [ -f "$END_FILE" ]; then
 	rm $END_FILE
 fi
 
+if [ -f "$DELTARUNEDIR/.exit_lock" ]; then
+	rm "$DELTARUNEDIR/.exit_lock"
+fi
+
 if [[ -f "$DELTARUNEDIR/.hide_input" ]]; then
 		HIDE_INPUT_DEVICES=1
 fi
@@ -68,12 +73,35 @@ if [[ $HIDE_INPUT_DEVICES -eq 1 ]]; then
 		HIDE_INPUT_COMMAND="bwrap --bind / / --tmpfs /dev/input"
 fi
 
-"$DELTARUNEDIR/.watch" $$ $(sleep 5; pidof inotifywait) &
+function exit_game {
+		# To prevent it running twice
+		if [[ -f ".exit_lock" ]]; then exit 0; fi
+		touch .exit_lock
+		echo "Thanks for playing, hope you had fun :D"
+		if kill -0 $(pidof inotifywait) 2>/dev/null; then
+			kill -9 $(pidof inotifywait)
+		fi
+		if kill -0 $(pidof deltarune) 2>/dev/null; then
+			kill -9 $(pidof deltarune)
+		fi
+		exit 0
+}
+
+trap 'exit_game' SIGINT
+
+function watch_game {
+	while true; do
+		sleep 4
+		if [[ "$(pidof deltarune)" == "" ]]; then
+				exit_game
+		fi
+	done
+}
 
 function run_game {
-	# We need to set the numeric locale to en_US because it uses a dot for decimals and GMS requires it.
-	LC_NUMERIC=en_US.UTF-8 "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND ./deltarune &
-	# After the first run during the chapter switch, we want to wait a bit so the next process loads before killing the first one.
+	# We need to set the locale to C (standard locale) because it uses a dot for decimals and GMS requires it.
+	LC_ALL=C "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND ./deltarune &
+	# After the first run during the chapter switch, we want to wait a bit before killing the first one.
 	if [ $FIRST_RUN == 0 ]; then
 		sleep 4
 	fi
@@ -82,6 +110,10 @@ function run_game {
 	fi
 	DELTARUNEPID=$(sleep 1; pidof deltarune)
 	FIRST_RUN=0
+	if [[ $GAME_WATCH -eq 0 ]]; then
+		watch_game &
+	fi
+	GAME_WATCH=1
 }
 
 # Run the game!

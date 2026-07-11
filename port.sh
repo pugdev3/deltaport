@@ -6,15 +6,14 @@ set -E
 DELTARUNEDIR=""
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
+LATEST_VERSION="0.0.247"
 CHAPTERS=5
 STEAMCLOUD=0
-CONSOLEBORDERS_MOD=0
+NXRUNE_MOD=0
 
-VERSION_240_CHECKSUM="f3dabe6444829688fd7fbaa68f78794f"
-VERSION_241_CHECKSUM="0a448a89c32c802a138621a39ced69db"
-VERSION_242_CHECKSUM="cc76c5efeb1b5fefd1822ceb1340ca10"
 VERSION_243_CHECKSUM="359adb2db26d7e902f4c26b40e9b58ae"
 VERSION_244_CHECKSUM="ddedbbd10ff129b49c64dbefaa763c6a"
+VERSION_247_CHECKSUM="908643b7593b000f5b6c61bb484d086a"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -36,45 +35,40 @@ function steam_cloud_support {
             mkdir -p "$HOME/.config/DELTARUNE"
             # NOTE: From my observations, Steam Cloud seems to create this directory automatically when syncing saves, but just to make sure:
             mkdir -p "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
+            # NOTE 2: Other directory where saves are also stored
+            mkdir -p "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/AppData/Local/"
             cd "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/Local Settings/Application Data"
             if [[ -d "DELTARUNE" ]]; then
                 rm -r "DELTARUNE"
             fi
             ln -s "$HOME/.config/DELTARUNE" "DELTARUNE"
+            cd "$HOME/.local/share/Steam/steamapps/compatdata/1671210/pfx/drive_c/users/steamuser/AppData/Local"
+            if [[ -d "DELTARUNE" ]]; then
+                rm -r "DELTARUNE"
+            fi
+            ln -s "$HOME/.config/DELTARUNE" "DELTARUNE"
+            log "Steam Cloud support added! Please try not deleting the '.config/DELTARUNE' folder before running the game as it may break things."
      fi
 }
 
-function consoleborders_mod_support {
-    if [[ $ARGS == "consoleborders" ]]; then
-        CONSOLEBORDERS_MOD=1
-        select_dir
+function nxrune_mod_support {
+    if [[ $ARGS == "nxrune" && $NXRUNE_MOD -eq 0 ]]; then
+        NXRUNE_MOD=1
+        find_deltarune_dir
     fi
-    if [[ "$CONSOLEBORDERS_MOD" == 1 ]]; then
-            log "Applying the 'consoleborders' mod patches..."
-            hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/consoleborders/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
+    if [[ $NXRUNE_MOD -eq 1 ]]; then
+            log "Applying the 'nxrune' mod patches..."
+            hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
             for ((i = 1 ; i <= CHAPTERS ; i++)); do
-                hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/consoleborders/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
+                hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/nxrune/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
             done
             log "Mod patches sucessfully applied :D"
-            if [[ $ARGS == "consoleborders" ]]; then exit 0; fi
     fi
 }
 
 if [[ $ARGS == "steamcloud" ]]; then STEAMCLOUD=1; steam_cloud_support && exit 0; fi
 
 function check_version {
-   if echo "${VERSION_240_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="0.0.240"
-   fi
-
-    if echo "${VERSION_241_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="0.0.241"
-   fi
-
-    if echo "${VERSION_242_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="0.0.242"
-   fi
-
     if echo "${VERSION_243_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         VERSION="0.0.243"
    fi
@@ -82,9 +76,14 @@ function check_version {
     if echo "${VERSION_244_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         VERSION="0.0.244"
    fi
+
+       if echo "${VERSION_247_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.247"
+   fi
 }
 
 function port_game() {
+   if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support && exit 0; fi
    echo ""
 
     if [[ -f "$DELTARUNEDIR/DELTARUNE.sh" ]]; then
@@ -116,11 +115,11 @@ function port_game() {
    check_version
 
    if [[ "$VERSION" == "" ]]; then
-        warn "WARNING: data.win checksum does not match with any version. Please check supported versions or you may have corrupt game files. A reminder this is for version(s) 0.0.240-44"
+        warn "WARNING: data.win checksum does not match with any version. Please check supported versions or you may have corrupted game files."
         while true; do
             read -p "Continue anyway? [y/n]: " yn
             case $yn in
-                [Yy]* ) log "Using latest version available" && VERSION="0.0.244"; break;;
+                [Yy]* ) log "Using latest version available" && VERSION="$LATEST_VERSION"; break;;
                 [Nn]* ) exit 1; break;;
                 * ) exit 1; break;;
 		    esac
@@ -154,7 +153,6 @@ function port_game() {
    cp "$SCRIPTDIR/DELTARUNE.sh" .
    cp "$SCRIPTDIR/files/options.ini" .
    cp "$SCRIPTDIR/icon.png" .
-   cp "$SCRIPTDIR/.watch" .
     if [ -f "$SCRIPTDIR/.ubuntu" ]; then
         cp "$SCRIPTDIR/.ubuntu" .
         cp -r "$SCRIPTDIR/lib" .
@@ -219,19 +217,19 @@ function port_game() {
    done
 
    # Only the latest version is supported!
-   if [[ "$VERSION" == "0.0.244" ]]; then
+   if [[ "$VERSION" == $LATEST_VERSION ]]; then
         while true; do
             read -p "$(log 'Optionally add the Console Borders mod? [y/n]: ')" yn
             case $yn in
-                [Yy]* ) CONSOLEBORDERS_MOD=1; break;;
-                [Nn]* ) log "If you change your mind, run './port.sh consoleborders' to add them!!"; break;;
+                [Yy]* ) NXRUNE_MOD=1; break;;
+                [Nn]* ) log "If you change your mind, run './port.sh nxrune' to add them!!"; break;;
                 *) break;;
             esac
         done
    fi
 
+   nxrune_mod_support
    steam_cloud_support
-   consoleborders_mod_support
 
    echo -e "\e[1;32m SUCCESS! The port script finished. \e[0m"
    log 'To play DELTARUNE, go to Steam -> DELTARUNE -> Properties -> Launch Options -> Put this: "./DELTARUNE.sh" -- %command%'
@@ -261,28 +259,31 @@ function select_dir() {
    fi
 
    DELTARUNEDIR=${path%/}
-   if [[ $ARGS == "consoleborders" ]]; then return 0; fi
    port_game
 }
 
-if [[ $ARGS == "consoleborders" ]]; then consoleborders_mod_support && exit 0; fi
+find_deltarune_dir() {
+    if [ -d "$HOME/.local/share/Steam/steamapps/common/DELTARUNE" ]; then
+        DELTARUNEDIR="$HOME/.local/share/Steam/steamapps/common/DELTARUNE"
+        log "Detected deltarune directory at $DELTARUNEDIR."
+        while true; do
+            read -p "Is this correct? [y/n]: " yn
+            case $yn in
+                [Yy]* ) port_game; break;;
+                [Nn]* ) select_dir; break;;
+                * ) select_dir; break;;
+                esac
+            done
+    else
+        select_dir
+    fi
+}
+
+if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support; fi
 
 log "Welcome to the unofficial DELTARUNE Linux port."
-log "This is the port for version(s): 0.0.240-44"
+log "This is the port for version(s): 0.0.243-47"
 log "You will need to bring your own game files, as none of them are included here."
 echo ""
 
-if [ -d "$HOME/.local/share/Steam/steamapps/common/DELTARUNE" ]; then
-	DELTARUNEDIR="$HOME/.local/share/Steam/steamapps/common/DELTARUNE"
-	log "Detected deltarune directory at $DELTARUNEDIR."
-	while true; do
-		read -p "Is this correct? [y/n]: " yn
-		case $yn in
-			[Yy]* ) port_game; break;;
-			[Nn]* ) select_dir; break;;
-			* ) select_dir; break;;
-		    esac
-		done
-else
-	select_dir
-fi
+find_deltarune_dir

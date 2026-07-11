@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
+ARGS=$1
 set -euo pipefail
 
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FFMPEG4_INSTALLED=0
+FFMPEG_URL=""
 HDIFFPATCH_INSTALLED=0
-deps=("git" "hpatchz" "inotifywait" "ffmpeg" "wget")
+deps=("curl" "hpatchz" "inotifywait" "ffmpeg" "wget")
 # Internal / to display on screen.
 missing_deps=()
 missing_deps_list=()
@@ -14,6 +16,10 @@ cd "$SCRIPTDIR"
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
 error() { echo -e "\e[38;5;203m::\e[0m \e[1m\e[38;5;196m$1\e[0m" && exit 1; }
+
+if [ "$EUID" -eq 0 ]; then
+    error "ERROR: Please don't run this as root."
+fi
 
 if [ -d "$SCRIPTDIR/lib" ] || [ -f "/usr/lib64/libavcodec.so.58" ] || [ -f "/usr/lib/x86_64-linux-gnu/libavcodec.so.58" ]; then
     FFMPEG4_INSTALLED=1
@@ -30,8 +36,9 @@ install_patcher() {
             return;
     fi
     log "Installing hdiffpatch..."
+    DOWNLOAD_URL=$(curl -s https://api.github.com/repos/sisong/HDiffPatch/releases/latest | jq --raw-output '.assets[1] | .browser_download_url')
     mkdir -p linux64
-    wget https://github.com/sisong/HDiffPatch/releases/download/v4.12.2/hdiffpatch_v4.12.2_bin_linux64.zip -O hdiffpatch.zip
+    wget $DOWNLOAD_URL -O hdiffpatch.zip
     unzip hdiffpatch.zip -d .
 
     sudo install -Dm 0755 'linux64/hdiffz' "/usr/bin/hdiffz"
@@ -49,10 +56,12 @@ install_ffmpeg4() {
     touch .ubuntu
     # Download ffmpeg4 libs on Ubuntu for video playback compatibility
     log "Downloading ffmpeg4 libraries..."
-    wget https://github.com/pugdev3/files/raw/refs/heads/main/ffmpeg4.tar.gz -O ffmpeg4.tar.gz
+    wget "" -O ffmpeg4.tar.gz
     tar -xvf ffmpeg4.tar.gz
     rm ffmpeg4.tar.gz
 }
+
+if [[ $ARGS == "ffmpeg4" ]]; then FFMPEG4_INSTALLED=0; install_ffmpeg4 && exit 0; fi
 
 function install_deps() {
     if [[ -f /etc/os-release ]]; then
@@ -76,12 +85,13 @@ function install_deps() {
 
     install_fedora() {
         log "Installing dependencies..."
+        missing_deps+=("compat-ffmpeg4")
         sudo dnf update
         if ! rpm -q --quiet rpmfusion-free-release; then
             log "Installing rpmfusion for necessary packages"
             sudo dnf install -y "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
         fi
-        sudo dnf install --allowerasing -y ${missing_deps[*]} compat-ffmpeg4
+        sudo dnf install --allowerasing -y ${missing_deps[*]}
         install_patcher
         log "Dependencies sucessfully installed :)"
         sleep 1
@@ -90,15 +100,17 @@ function install_deps() {
 
     install_arch() {
         log "Installing dependencies..."
+        missing_deps+=("ffmpeg4.4")
         if command -v paru 2>&1 >/dev/null
         then
-            paru -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4 hdiffpatch-bin
+            paru -Sy --noconfirm ${missing_deps[*]} hdiffpatch-bin
         elif command -v yay 2>&1 >/dev/null
         then
-            yay -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4 hdiffpatch-bin
+            yay -Sy --noconfirm ${missing_deps[*]} hdiffpatch-bin
         else
             # We need base-devel to install AUR packages on Arch
-            sudo pacman -Sy --noconfirm ${missing_deps[*]} ffmpeg4.4 base-devel
+            missing_deps+=("base-devel")
+            sudo pacman -Sy --noconfirm ${missing_deps[*]}
             git clone https://aur.archlinux.org/hdiffpatch-bin.git
             cd hdiffpatch-bin
             makepkg -si
@@ -112,6 +124,7 @@ function install_deps() {
     case "${DISTRO_ID}" in
         ubuntu|debian)
             log "Ubuntu/Debian detected."
+            FFMPEG_URL="https://github.com/pugdev3/files/raw/refs/heads/main/ffmpeg4-v2.tar.gz"
             install_ubuntu
             ;;
         fedora)
