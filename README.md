@@ -20,7 +20,9 @@ O port utiliza a [tradução feita por eles](https://github.com/teiarruma/deltar
 Créditos ao TEIARRUMA pela tradução maravilhosa e ao Tobias Raposo por ter criado esse jogaço :)
 
 ## Como usar <img width="25rem" alt="ralsei boneco" src="https://github.com/user-attachments/assets/a270cef6-4ec3-4856-8d18-4df6b297384b" />
-> Você **precisa** da versão **1.40** para usar esse port, veja um pouco abaixo como conseguir essa versão.
+> Você **precisa** da versão **0.0.247** para usar esse port, veja um pouco abaixo como conseguir essa versão.
+
+Se você estiver lendo isso pouco tempo depois do lançamento da versão 0.05, é só baixar o jogo na Steam e usar o port sem fazer nada extra
  
 Baixe o último [lançamento no Github](https://github.com/pugdev3/deltaport/releases/latest), extraia o arquivo, e dentro da pasta, clique duas vezes no `port.sh` ou rode no seu terminal:
 
@@ -55,11 +57,11 @@ Pressione enter e depois de abrir, abra a aba de Console
 
 Agora acesse **[este link do SteamDB](https://steamdb.info/depot/1671212/manifests/)**, a página está na inglês mas não se preocupe, vou dizer o que você precisa fazer
 
-<img width="800em" alt="página do SteamDB com as versões de DELTARUNE" src="https://github.com/user-attachments/assets/5186754f-04b9-4d92-8921-fc3a97b84f53" />
+<img width="800em" alt="página do SteamDB com as versões de DELTARUNE" src="https://github.com/user-attachments/assets/cf44302b-d1ba-4850-96a9-89b03179a7e0" />
 
-A onde está escrito `Copy format` (Formato de cópia) selecione `Steam console` e depois clique no botão de copiar do lado da setinha (logo abaixo de `deltarune105`)
+A onde está escrito `Copy format` (Formato de cópia) selecione `Steam console` e depois clique no botão de copiar do lado da setinha
 
-Essa é a versão **1.04**, agora, volte para Steam e cole o que você copiou na caixinha de texto, deve ficar assim:
+Essa é a versão **0.0.247**, agora, volte para Steam e cole o que você copiou na caixinha de texto, deve ficar algo assim:
 
 <img width="800em" alt="aba de console da Steam com o comando download_depot colocado" src="https://github.com/user-attachments/assets/9b1bbbea-658d-44e6-b5c9-eca1a12d0b82" />
 
@@ -73,6 +75,18 @@ Na captura de tela você deve ter percebido que no caminho do jogo: `\steamapps\
 Agora, se você quer abrir o jogo pela Steam, primeiro você tem que instalar o jogo pela Steam, depois abra `~/.local/share/Steam/steamapps/common` e apague a pasta do DELTARUNE e substitua pela pastinha `depot_1671212` que a gente baixou usando o comando
 
 Você pode fazer isso antes ou depois de portar o jogo, só tenha certeza de escolher a pasta correta.
+
+## Bordas de console <img height="50rem" alt="kris and ralsei pushing each other" src="https://github.com/user-attachments/assets/ed1143c7-fd1d-440a-8100-137d2ff2f659" />
+
+O deltaport inclui suporte opcional para o mod  **[NXRUNE](https://gamejolt.com/games/nxrune/629072)** que adiciona as bordas (bordas bonitas por volta da tela que são exclusivos para console) aqui no Linux, especialmente útil pra quem tem widescreen
+
+Pra habiltiar o mod,  digite `s` quando o script te pedir ou rode `./port.sh nxrune` no seu terminal.
+
+Atualmente disponível apenas para a última versão: 0.0.247
+
+Créditos ao [Iruzz](https://github.com/IruzzArcana) por ter feito o mod :D
+
+<img width="800em" alt="demo do deltaport com o mod do nxrune" src="https://github.com/user-attachments/assets/f953e5a6-d02e-46af-ad61-b60b8729e16b" />
 
 ## Como esse trem funciona? <img width="35rem" alt="pug pensante" src="https://github.com/user-attachments/assets/8ce7e9a3-9809-4022-b6bc-95cc2165cab1" />
 
@@ -116,12 +130,7 @@ Dito isso, é preciso ter:
 
 ## Problemas conhecidos <img width="35rem" alt="ralsei chocada" src="https://github.com/user-attachments/assets/f081e38a-e5a1-4c24-a34e-de28e8c98eb9" />
 
-* Ao carregar um save, você deve notar que seu áudio/música sumiram (cadê meu som???) calma que não é seu PC, pra arrumar isso, vá para sua pastinha de saves: `~/.config/DELTARUNE` e abra seu arquivo de save:
-1. `filech#_0` - Primeiro slot de save no menu
-2. `filech#_1` - Segundo slot de save no menu
-3. `filech#_2` - Terceiro slot de save no menu
-
-Vá para a linha **569/570** (333/334 no Capítulo 1) e mude o `.` para `,` ou vice-versa.
+* Se você tava usando a versão antiga e o áudio do jogo sumiu depois de carregar um save, vá para sua pastinha de saves: `~/.config/DELTARUNE` abra seu save e mude as linhas **569/570** de uma "," para um "."
 
 * Controles podem não funcionar
 
