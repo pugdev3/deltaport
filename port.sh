@@ -181,7 +181,9 @@ function port_game() {
    if [[ "$CHAPTERS" -ge 5 ]]; then
         log "Arrumando um bug nos vídeos do Capítulo 5..."
 
+        cd "$SCRIPTDIR"
         cd "$DELTARUNEDIR"
+
         cd "chapter5_linux/assets/vid"
         cp ch5_intro_en.mp4 ch5_intro_en.mp4.temp
         cp ch5_intro_jp.mp4 ch5_intro_jp.mp4.temp
