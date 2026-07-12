@@ -170,13 +170,6 @@ function check_deps() {
         fi
     done
 
-    if command -v apt 2>&1 >/dev/null; then
-        if [[ $FFMPEG4_INSTALLED == 0 ]]; then
-            log "Parece que o apt está instalado e o ffmpeg4 está faltando, assumindo Ubuntu/Debian e baixando bibliotecas..."
-            install_ffmpeg4
-        fi
-    fi
-
     if (( ${#missing_deps_list[@]} != 0 )); then
         log "As seguintes dependências estão em falta no seu sistema: ${missing_deps_list[*]}"
         while true; do
