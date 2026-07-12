@@ -108,7 +108,10 @@ function run_game {
 	if [ "$DELTARUNEPID" != "" ]; then
 		kill -9 $DELTARUNEPID;
 	fi
-	DELTARUNEPID=$(sleep 1; pidof deltarune)
+	until DELTARUNEPID=$(pidof deltarune)
+	do
+		sleep 1
+	done
 	FIRST_RUN=0
 	if [[ $GAME_WATCH -eq 0 ]]; then
 		watch_game &
