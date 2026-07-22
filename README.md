@@ -16,6 +16,8 @@ Only available for Linux x86_64
 
 Ei, psiu, fala português? 🇧🇷 **Então veja [a versão PT-BR do deltaport!!](https://github.com/pugdev3/deltaport/tree/pt-br)**
 
+Also has Linux ports for the fangames [Undertale Yellow](https://github.com/pugdev3/deltaport/tree/uty) and [Undertale: Kindred Spirits](https://github.com/pugdev3/deltaport/tree/kindredspirits), Click on their names for more info.
+
 ## Usage <img width="25rem" alt="ralsei dummy" src="https://github.com/user-attachments/assets/a270cef6-4ec3-4856-8d18-4df6b297384b" />
 > [!IMPORTANT]
 > Check out [Supported versions](https://github.com/pugdev3/deltaport#supported-versions-) for which versions you can use.
@@ -49,7 +51,7 @@ After opening, click the Console tab:
 
 <img width="617" height="72" alt="steam with console tab" src="https://github.com/user-attachments/assets/cf77220e-773c-4436-87b3-4e9664665c00" />
 
-Now, go to [here](https://steamdb.info/depot/1671212/manifests/) on SteamDB, you should find a list of manifests (versions) sorted by upload date, choose the one that applies
+Now, go to **[here on SteamDB](https://steamdb.info/depot/1671212/manifests/)**, you should find a list of manifests (versions) sorted by upload date, choose the one that applies
 
 <img width="378" height="54" alt="steamdb with two copy formats" src="https://github.com/user-attachments/assets/6e3eb9c4-9109-433c-bd57-6489c2ed564b" />
 
@@ -81,6 +83,8 @@ Here is a list of the currently supported versions by the port:
 | [v0.0.243](https://steamdb.info/patchnotes/23962447/) | `359adb2db26d7e902f4c26b40e9b58ae` | 29 June 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)   
 | [v0.0.244](https://bsky.app/profile/undertale.com/post/3mpkv5vypm22a) | `ddedbbd10ff129b49c64dbefaa763c6a` | 1 July 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)
 | [v0.0.247](https://steamdb.info/patchnotes/24122389/) | `908643b7593b000f5b6c61bb484d086a` | 9 July 2026 | [v0.05](https://github.com/pugdev3/deltaport/releases/download/v0.05/deltaport-v0.05.tar.gz)
+| [v0.0.250](https://steamdb.info/patchnotes/24327867/) | `1f00145d681f830f1249d9493ba8f579` | 22 July 2026 | [v0.06](https://github.com/pugdev3/deltaport/releases/download/v0.06/deltaport.tar.gz)
+
 
 Other versions can be upgraded using the update script + Steam update
 
@@ -88,7 +92,7 @@ Other versions can be upgraded using the update script + Steam update
 There is optional support for **[NXRUNE](https://gamejolt.com/games/nxrune/629072)**'s borders mod on deltaport that enables console borders (cool dynamic borders around the screen exclusive to consoles) on Linux, especially useful for widescreen users.
 To enable it, type `y` when prompted during the script or run `./port.sh nxrune` in your terminal application.
 
-Currently it's only available for versions: 0.0.244/0.0.247
+Currently it's only available for versions: 0.0.244/0.0.247/0.0.250 (Only includes patches for latest per release!)
 
 <img width="800em" alt="demo of deltaport with console borders mod" src="https://github.com/user-attachments/assets/c231df57-94fe-47a3-bf29-080a2b22feb9" />
 

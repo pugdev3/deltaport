@@ -6,14 +6,14 @@ set -E
 DELTARUNEDIR=""
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
-LATEST_VERSION="0.0.247"
+LATEST_VERSION="0.0.250"
 CHAPTERS=5
 STEAMCLOUD=0
 NXRUNE_MOD=0
 
-VERSION_243_CHECKSUM="359adb2db26d7e902f4c26b40e9b58ae"
 VERSION_244_CHECKSUM="ddedbbd10ff129b49c64dbefaa763c6a"
 VERSION_247_CHECKSUM="908643b7593b000f5b6c61bb484d086a"
+VERSION_250_CHECKSUM="1f00145d681f830f1249d9493ba8f579"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -77,14 +77,23 @@ function check_version {
         VERSION="0.0.244"
    fi
 
-       if echo "${VERSION_247_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="0.0.247"
+       if echo "${VERSION_250_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.250"
    fi
 }
 
 function port_game() {
    if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support && exit 0; fi
    echo ""
+
+   while true; do
+        read -p "$(log 'Start the porting process? [y/n]: ')" yn
+        case $yn in
+            [Yy]* ) break;;
+            [Nn]* ) exit 1; break;;
+            * ) exit 1; break;;
+            esac
+        done
 
     if [[ -f "$DELTARUNEDIR/DELTARUNE.sh" ]]; then
         if [[ -f "$DELTARUNEDIR/data.win" ]]; then
@@ -209,15 +218,6 @@ function port_game() {
          hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/v$VERSION/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
    done
 
-   while true; do
-        read -p "$(log 'Optionally add Steam Cloud saves support? [y/n]: ')" yn
-        case $yn in
-            [Yy]* ) STEAMCLOUD=1; break;;
-            [Nn]* ) break;;
-            *) break;;
-            esac
-   done
-
    # Only the latest version is supported!
    if [[ "$VERSION" == $LATEST_VERSION ]]; then
         while true; do
@@ -230,8 +230,17 @@ function port_game() {
         done
    fi
 
-   nxrune_mod_support
+   while true; do
+        read -p "$(log 'Optionally add Steam Cloud saves support? [y/n]: ')" yn
+        case $yn in
+            [Yy]* ) STEAMCLOUD=1; break;;
+            [Nn]* ) break;;
+            *) break;;
+            esac
+   done
+
    steam_cloud_support
+   nxrune_mod_support
 
    echo -e "\e[1;32m SUCCESS! The port script finished. \e[0m"
    log 'To play DELTARUNE, go to Steam -> DELTARUNE -> Properties -> Launch Options -> Put this: "./DELTARUNE.sh" -- %command%'
@@ -284,7 +293,7 @@ find_deltarune_dir() {
 if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support; fi
 
 log "Welcome to the unofficial DELTARUNE Linux port."
-log "This is the port for version(s): 0.0.243-47"
+log "This is the port for version(s): 0.0.244-50"
 log "You will need to bring your own game files, as none of them are included here."
 echo ""
 

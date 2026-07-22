@@ -79,7 +79,7 @@ function install_deps() {
         install_patcher
         install_ffmpeg4
         log "Dependencies sucessfully installed :)"
-        sleep 1
+        sleep 3
         clear
     }
 
@@ -94,7 +94,7 @@ function install_deps() {
         sudo dnf install --allowerasing -y ${missing_deps[*]}
         install_patcher
         log "Dependencies sucessfully installed :)"
-        sleep 1
+        sleep 3
         clear
     }
 
@@ -117,7 +117,7 @@ function install_deps() {
             cd .. && rm -r hdiffpatch-bin
         fi
         log "Dependencies sucessfully installed :)"
-        sleep 1
+        sleep 3
         clear
     }
 
