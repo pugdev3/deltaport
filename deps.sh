@@ -78,7 +78,7 @@ function install_deps() {
         install_patcher
         install_ffmpeg4
         log "Dependências instaladas com sucesso :)"
-        sleep 1
+        sleep 3
         clear
     }
 
@@ -90,11 +90,10 @@ function install_deps() {
             log 'Instalando o repositório de terceiro "rpmfusion" para instalar os pacotes necessários...'
             sudo dnf install -y "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
         fi
-        sleep 3
         sudo dnf install --allowerasing -y ${missing_deps[*]}
         install_patcher
         log "Dependências instaladas com sucesso :)"
-        sleep 1
+        sleep 3
         clear
     }
 
@@ -118,7 +117,7 @@ function install_deps() {
             cd .. && rm -r hdiffpatch-bin
         fi
         log "Dependências instaladas com sucesso :)"
-        sleep 1
+        sleep 3
         clear
     }
 

@@ -6,12 +6,13 @@ set -E
 DELTARUNEDIR=""
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
-LATEST_VERSION="0.0.247"
+LATEST_VERSION="0.0.250"
 CHAPTERS=5
 STEAMCLOUD=0
 NXRUNE_MOD=0
 
 VERSION_247_CHECKSUM="908643b7593b000f5b6c61bb484d086a"
+VERSION_250_CHECKSUM="1f00145d681f830f1249d9493ba8f579"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -78,11 +79,24 @@ function check_version {
    if echo "${VERSION_247_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         VERSION="0.0.247"
    fi
+
+   if echo "${VERSION_250_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.250"
+   fi
 }
 
 function port_game() {
    if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support && exit 0; fi
    echo ""
+
+   while true; do
+        read -p "$(log 'Começar a portar o jogo? [S/n]: ')" sn
+        case $sn in
+            [Ss]* ) break;;
+            [Nn]* ) exit 1; break;;
+            * ) exit 1; break;;
+            esac
+        done
 
     if [[ -f "$DELTARUNEDIR/DELTARUNE.sh" ]]; then
         warn "AVISO: Parece que o jogo já foi portado pra Linux (Arquivo DELTARUNE.sh encontrado). Tentar portar denovo pode causar problemas."
