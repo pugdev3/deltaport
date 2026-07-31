@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 ARGS=$1
-set -e pipefail
+set -eo pipefail
 set -E
 
 DELTARUNEDIR=""
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
-LATEST_VERSION="0.0.250"
+LATEST_VERSION="0.0.253"
 CHAPTERS=5
 STEAMCLOUD=0
 NXRUNE_MOD=0
 
-VERSION_247_CHECKSUM="908643b7593b000f5b6c61bb484d086a"
-VERSION_250_CHECKSUM="1f00145d681f830f1249d9493ba8f579"
+VERSION_253_CHECKSUM="83a5a14f9b92a20f21fb9ec6c8528469"
+NXRUNE_CHECKSUM="6b5114025dda21f4fbe7b11d6b31e70a"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -56,37 +56,31 @@ function steam_cloud_support {
 }
 
 function nxrune_mod_support {
-    if [[ $ARGS == "nxrune" && $NXRUNE_MOD -eq 0 ]]; then
-        NXRUNE_MOD=1
-        find_deltarune_dir
-    fi
     if [[ $NXRUNE_MOD -eq 1 ]]; then
+            if echo "${NXRUNE_CHECKSUM}" $DELTARUNEDIR/assets/game.unx | md5sum -c; then
+                error "ERRO: Parece que o mod já foi aplicado, não é possivel aplicar duas vezes"
+            fi
             log "Aplicando as patches do mod 'nxrune'"
             hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/00-telainicial-bordas.hpatch" "$DELTARUNEDIR/assets/game.unx"
             for ((i = 1 ; i <= CHAPTERS - 1 ; i++)); do
                 hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/nxrune/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
             done
             hpatchz -f "$DELTARUNEDIR/chapter5_linux/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/05-capitulo_05-bordas.hpatch" "$DELTARUNEDIR/chapter5_linux/assets/game.unx"
-            # Atualizar o hash MD5 (valor númerico que o jogo usa pra checar se está atualizado) pra versão com bordas
-            hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/06-atualizar_md5.hpatch" "$DELTARUNEDIR/assets/game.unx"
-            log "Patches do mod aplicados com sucesso :D"
+            log "Os patches do mod foram aplicados"
+            if [[ "$ARGS" == "nxrune" ]]; then exit 0; fi
     fi
 }
 
 if [[ $ARGS == "steamcloud" ]]; then STEAMCLOUD=1; steam_cloud_support && exit 0; fi
 
 function check_version {
-   if echo "${VERSION_247_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="0.0.247"
-   fi
-
-   if echo "${VERSION_250_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="0.0.250"
+   if echo "${VERSION_253_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.253"
    fi
 }
 
 function port_game() {
-   if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support && exit 0; fi
+   nxrune_mod_support
    echo ""
 
    while true; do
@@ -225,9 +219,6 @@ function port_game() {
    # deltaport suporta os 5 capítulos, pt-br apenas 4
    hpatchz -f "$DELTARUNEDIR/chapter5_linux/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/deltaport/05-capitulo_05.hpatch" "$DELTARUNEDIR/chapter5_linux/assets/game.unx"
 
-   # Atualizar o hash MD5 (valor númerico que o jogo usa pra checar se está atualizado) pras versões de Linux
-   hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/v$VERSION/pt_br/05-atualizar_md5.hpatch" "$DELTARUNEDIR/assets/game.unx"
-
     if [[ "$VERSION" == $LATEST_VERSION ]]; then
         while true; do
             read -p "$(log 'Adicionar opcionalmente o mod de bordas de Console? (NXRUNE) [S/n]: ')" sn
@@ -300,7 +291,7 @@ find_deltarune_dir() {
     fi
 }
 
-if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support; fi
+if [[ $ARGS == "nxrune" ]]; then NXRUNE_MOD=1; find_deltarune_dir; fi
 
 log "Bem-vindo ao port não oficial do DELTARUNE para Linux :D (versão PT-BR)"
 log "Para portar o jogo, você vai precisar da versão $LATEST_VERSION em específico, dê uma olhada no Github para saber como conseguir essa versão."

@@ -22,9 +22,9 @@ Créditos ao TEIARRUMA pela tradução maravilhosa e ao Tobias Raposo por ter cr
 Também há suporte para os fangames [Undertale Yellow](https://github.com/pugdev3/deltaport/tree/uty) e [Undertale: Kindred Spirits](https://github.com/pugdev3/deltaport/tree/kindredspirits)
 
 ## Como usar <img width="25rem" alt="ralsei boneco" src="https://github.com/user-attachments/assets/a270cef6-4ec3-4856-8d18-4df6b297384b" />
-> Você **precisa** da versão **0.0.250** para usar esse port, veja um pouco abaixo como conseguir essa versão.
+> Você **precisa** da versão **0.0.253** para usar esse port, veja um pouco abaixo como conseguir essa versão.
 
-Se você estiver lendo isso pouco tempo depois do lançamento da versão 0.06, é só baixar o jogo na Steam e usar o port sem fazer nada extra
+Atualmente você pode apenas baixar o jogo na Steam e usar o port normalmente, já que tem suporte para a sua última versão
  
 Baixe o último [lançamento no Github](https://github.com/pugdev3/deltaport/releases/latest), extraia o arquivo, e dentro da pasta, clique duas vezes no `port.sh` ou rode no seu terminal:
 
@@ -59,11 +59,11 @@ Pressione enter e depois de abrir, abra a aba de Console
 
 Agora acesse **[este link do SteamDB](https://steamdb.info/depot/1671212/manifests/)**, a página está na inglês mas não se preocupe, vou dizer o que você precisa fazer
 
-<img width="800em" alt="página do SteamDB com as versões de DELTARUNE" src="https://github.com/user-attachments/assets/e6ab6e6b-e216-46ce-a07b-c70c1ae7aeda" />
+<img width="800em" alt="página do SteamDB com as versões de DELTARUNE" src="https://github.com/user-attachments/assets/d27634f3-ae96-48b1-af14-44907f5bf4c0" />
 
 A onde está escrito `Copy format` (Formato de cópia) selecione `Steam console` e depois clique no botão de copiar do lado da setinha
 
-Essa é a versão **0.0.250**, agora, volte para Steam e cole o que você copiou na caixinha de texto, deve ficar algo assim:
+Essa é a versão **0.0.253**, agora, volte para Steam e cole o que você copiou na caixinha de texto, deve ficar algo assim:
 
 <img width="800em" alt="aba de console da Steam com o comando download_depot colocado" src="https://github.com/user-attachments/assets/9b1bbbea-658d-44e6-b5c9-eca1a12d0b82" />
 
@@ -72,11 +72,13 @@ Depois disso, pressione enter, e deve começar a baixar o jogo.
 <img width="800em" alt="Steam com aba de console e gerenciador de arquivos Dolphin" src="https://github.com/user-attachments/assets/368d92f0-fff8-434f-807e-1fc175a87959" />
 
 
-Na captura de tela você deve ter percebido que no caminho do jogo: `\steamapps\content\app_1671210\depot_1671212` a Steam coloca `\` no meio por algum motivo (virou Windows agora steam??), só mudar para `/` e abrir no seu explorador de arquivos de escolha, você deve ter a versão 0.0.250 baixada no seu PC!
+Na captura de tela você deve ter percebido que no caminho do jogo: `\steamapps\content\app_1671210\depot_1671212` a Steam coloca `\` no meio por algum motivo (virou Windows agora steam??), só mudar para `/` e abrir no seu explorador de arquivos de escolha, você deve ter a versão 0.0.253 baixada no seu PC!
 
 Agora, se você quer abrir o jogo pela Steam, primeiro você tem que instalar o jogo pela Steam, depois abra `~/.local/share/Steam/steamapps/common` e apague a pasta do DELTARUNE e substitua pela pastinha `depot_1671212` que a gente baixou usando o comando
 
 Você pode fazer isso antes ou depois de portar o jogo, só tenha certeza de escolher a pasta correta.
+
+Esse guia também funciona para qualquer outra versão do jogo que o port tenha suporte
 
 ## Bordas de console <img height="50rem" alt="kris and ralsei pushing each other" src="https://github.com/user-attachments/assets/ed1143c7-fd1d-440a-8100-137d2ff2f659" />
 
@@ -84,7 +86,7 @@ O deltaport inclui suporte opcional para o mod  **[NXRUNE](https://gamejolt.com/
 
 Pra habiltiar o mod,  digite `s` quando o script te pedir ou rode `./port.sh nxrune` no seu terminal.
 
-Atualmente disponível apenas para a última versão: 0.0.247
+Atualmente disponível apenas para as versões: 0.0.247/250/253 (apenas inclui os patches da última versão por lançamento!)
 
 Créditos ao [Iruzz](https://github.com/IruzzArcana) por ter feito o mod :D
 
