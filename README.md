@@ -84,6 +84,7 @@ Here is a list of the currently supported versions by the port:
 | [v0.0.244](https://bsky.app/profile/undertale.com/post/3mpkv5vypm22a) | `ddedbbd10ff129b49c64dbefaa763c6a` | 1 July 2026 | [v0.03](https://github.com/pugdev3/deltaport/releases/download/v0.03/deltaport-v0.03.tar.gz)/[v0.04](https://github.com/pugdev3/deltaport/releases/download/v0.04/deltaport-v0.04.tar.gz)
 | [v0.0.247](https://steamdb.info/patchnotes/24122389/) | `908643b7593b000f5b6c61bb484d086a` | 9 July 2026 | [v0.05](https://github.com/pugdev3/deltaport/releases/download/v0.05/deltaport-v0.05.tar.gz)
 | [v0.0.250](https://steamdb.info/patchnotes/24327867/) | `1f00145d681f830f1249d9493ba8f579` | 22 July 2026 | [v0.06](https://github.com/pugdev3/deltaport/releases/download/v0.06/deltaport.tar.gz)
+| [v0.0.253](https://steamdb.info/patchnotes/24484059/) | `83a5a14f9b92a20f21fb9ec6c8528469` | 31 July 2026 | [v0.07](https://github.com/pugdev3/deltaport/releases/download/v0.07/deltaport.tar.gz)
 
 
 Other versions can be upgraded using the update script + Steam update
@@ -92,7 +93,7 @@ Other versions can be upgraded using the update script + Steam update
 There is optional support for **[NXRUNE](https://gamejolt.com/games/nxrune/629072)**'s borders mod on deltaport that enables console borders (cool dynamic borders around the screen exclusive to consoles) on Linux, especially useful for widescreen users.
 To enable it, type `y` when prompted during the script or run `./port.sh nxrune` in your terminal application.
 
-Currently it's only available for versions: 0.0.244/0.0.247/0.0.250 (Only includes patches for latest per release!)
+Currently it's only available for versions: 0.0.244-53 (Only includes patches for latest per release!)
 
 <img width="800em" alt="demo of deltaport with console borders mod" src="https://github.com/user-attachments/assets/c231df57-94fe-47a3-bf29-080a2b22feb9" />
 

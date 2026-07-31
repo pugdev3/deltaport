@@ -6,14 +6,15 @@ set -E
 DELTARUNEDIR=""
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 VERSION=""
-LATEST_VERSION="0.0.250"
+LATEST_VERSION="0.0.253"
 CHAPTERS=5
 STEAMCLOUD=0
 NXRUNE_MOD=0
 
-VERSION_244_CHECKSUM="ddedbbd10ff129b49c64dbefaa763c6a"
 VERSION_247_CHECKSUM="908643b7593b000f5b6c61bb484d086a"
 VERSION_250_CHECKSUM="1f00145d681f830f1249d9493ba8f579"
+VERSION_253_CHECKSUM="83a5a14f9b92a20f21fb9ec6c8528469"
+NXRUNE_CHECKSUM="1fb6530825f6c895b5af845c06b3577e"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -52,38 +53,38 @@ function steam_cloud_support {
 }
 
 function nxrune_mod_support {
-    if [[ $ARGS == "nxrune" && $NXRUNE_MOD -eq 0 ]]; then
-        NXRUNE_MOD=1
-        find_deltarune_dir
-    fi
     if [[ $NXRUNE_MOD -eq 1 ]]; then
+            if echo "${NXRUNE_CHECKSUM}" $DELTARUNEDIR/assets/game.unx | md5sum -c; then
+                error "ERROR: Hold on there mate, it seems like the mod patches are already applied, can't apply again sorry"
+            fi
             log "Applying the 'nxrune' mod patches..."
             hpatchz -f "$DELTARUNEDIR/assets/game.unx" "$SCRIPTDIR/files/patches/nxrune/00-chapterselect.hpatch" "$DELTARUNEDIR/assets/game.unx"
             for ((i = 1 ; i <= CHAPTERS ; i++)); do
                 hpatchz -f "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx" $SCRIPTDIR/files/patches/nxrune/0${i}-*.hpatch "$DELTARUNEDIR/chapter${i}_linux/assets/game.unx"
             done
             log "Mod patches sucessfully applied :D"
+            if [[ "$ARGS" == "nxrune" ]]; then exit 0; fi
     fi
 }
 
 if [[ $ARGS == "steamcloud" ]]; then STEAMCLOUD=1; steam_cloud_support && exit 0; fi
 
 function check_version {
-    if echo "${VERSION_243_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
-        VERSION="0.0.243"
-   fi
-
     if echo "${VERSION_244_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         VERSION="0.0.244"
    fi
 
-       if echo "${VERSION_250_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+   if echo "${VERSION_250_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         VERSION="0.0.250"
+   fi
+
+   if echo "${VERSION_253_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        VERSION="0.0.253"
    fi
 }
 
 function port_game() {
-   if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support && exit 0; fi
+   nxrune_mod_support
    echo ""
 
    while true; do
@@ -290,10 +291,10 @@ find_deltarune_dir() {
     fi
 }
 
-if [[ $ARGS == "nxrune" ]]; then nxrune_mod_support; fi
+if [[ $ARGS == "nxrune" ]]; then NXRUNE_MOD=1; find_deltarune_dir; fi
 
 log "Welcome to the unofficial DELTARUNE Linux port."
-log "This is the port for version(s): 0.0.244-50"
+log "This is the port for version(s): 0.0.247-53"
 log "You will need to bring your own game files, as none of them are included here."
 echo ""
 

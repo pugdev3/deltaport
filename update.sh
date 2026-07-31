@@ -14,6 +14,8 @@ VERSION_242_CHECKSUM="cc76c5efeb1b5fefd1822ceb1340ca10"
 VERSION_243_CHECKSUM="359adb2db26d7e902f4c26b40e9b58ae"
 VERSION_244_CHECKSUM="ddedbbd10ff129b49c64dbefaa763c6a"
 VERSION_247_CHECKSUM="908643b7593b000f5b6c61bb484d086a"
+VERSION_250_CHECKSUM="1f00145d681f830f1249d9493ba8f579"
+VERSION_253_CHECKSUM="83a5a14f9b92a20f21fb9ec6c8528469"
 
 log() { echo -e "\e[1;34m::\e[0m \e[1m$1\e[0m"; }
 warn() { echo -e "\n\e[38;5;172m::\e[0m \e[1m\e[38;5;208m$1\e[0m"; }
@@ -59,16 +61,24 @@ function check_version {
 
     if echo "${VERSION_243_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         UPDATED_VERSION="0.0.243"
-        LOCAL=1
    fi
 
     if echo "${VERSION_244_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         UPDATED_VERSION="0.0.244"
-        LOCAL=1
    fi
 
     if echo "${VERSION_247_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
         UPDATED_VERSION="0.0.247"
+        LOCAL=1
+   fi
+
+    if echo "${VERSION_250_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        UPDATED_VERSION="0.0.250"
+        LOCAL=1
+   fi
+
+    if echo "${VERSION_253_CHECKSUM}" $DELTARUNEDIR/data.win | md5sum -c; then
+        UPDATED_VERSION="0.0.253"
         LOCAL=1
    fi
 }
@@ -77,15 +87,16 @@ log "Detecting updated game version..."
 
 check_version
 
-if [[ $LOCAL -eq 0 ]]; then
-        error "It appears you have a very old updated version that's not included here, please update again through Steam or use update.sh from an older release."
-fi
-
 if [[ "$UPDATED_VERSION" == "" ]]; then
         log "You may have a more recent version then it's supported! Be sure to check for updates on github"
-        error  "ERROR: Unsupported game version or unable to detect. As of now, versions that include new chapters require you to reinstall the game."
+        error "ERROR: Unsupported game version or unable to detect. As of now, versions that include new chapters require you to reinstall the game."
 else
         log "Detected updated version: $UPDATED_VERSION"
+fi
+
+if [[ $LOCAL -eq 0 ]]; then
+        warn "Version: $UPDATED_VERSION not available locally"
+        error "It appears you have a very old updated version that's not included here, please update again through Steam or use update.sh from an older release."
 fi
 
 if [[ ! -d "$DELTARUNEDIR/chapter5_linux" ]]; then
