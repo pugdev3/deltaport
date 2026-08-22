@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+ARG=$1
 DELTARUNEDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 DELTARUNEPID=""
 SAVEDIR="$HOME/.config/DELTARUNE"
@@ -31,7 +31,7 @@ if [ -f "$DELTARUNEDIR/.ubuntu" ]; then
 fi
 
 # Check if trigger files are somehow there and delete them
-TRIGGER_FILES=("$CHAPTERSELECT_FILE" "$CHAPTER1_FILE" "$CHAPTER2_FILE" "$CHAPTER3_FILE" "$CHAPTER4_FILE" "$CHAPTER5_FILE" "$END_FILE")
+TRIGGER_FILES=("$CHAPTERSELECT_FILE" "$CHAPTER1_FILE" "$CHAPTER2_FILE" "$CHAPTER3_FILE" "$CHAPTER4_FILE" "$CHAPTER5_FILE")
 for f in "${TRIGGER_FILES[@]}"; do
 	[ -n "$f" ] && [ -f "$f" ] && rm "$f"
 done
@@ -96,10 +96,6 @@ function run_game {
 	GAME_WATCH=1
 }
 
-# Run the game!
-cd "$DELTARUNEDIR"
-run_game
-
 # =- All the logic for changing chapters / parsing trigger files -=
 parse_file() {
 	cd "$SAVEDIR"
@@ -131,6 +127,14 @@ change_chapter() {
 	cd "$target"
 	run_game
 }
+
+# Run the game!
+cd "$DELTARUNEDIR"
+if [[ "$ARG" != "" ]]; then
+	change_chapter $1
+else
+	run_game
+fi
 
 # Watch the game save directory for trigger files
 inotifywait -m $SAVEDIR  |
