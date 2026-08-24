@@ -5,7 +5,7 @@ set -euo pipefail
 SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FFMPEG4_INSTALLED=0
 HDIFFPATCH_INSTALLED=0
-deps=("curl" "hpatchz" "inotifywait" "ffmpeg" "wget")
+deps=("curl" "hpatchz" "inotifywait" "ffmpeg" "wget" "gamemode")
 # Interno / para mostrar na tela
 missing_deps=()
 missing_deps_list=()

@@ -78,7 +78,7 @@ function watch_game {
 
 function run_game {
 	# Setar o locale do sistema pro locale genérico 'C' porque eles usam ponto pra decimais e o GameMaker espera esse formato.
-	LC_ALL=C "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND ./deltarune &
+	LC_ALL=C "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND gamemoderun ./deltarune &
 	# Depois de rodar o jogo pela primeira vez na seleção de capitulos, a gente quer esperar um poquinho pro próximo processo carregar antes de matar o primeiro
 	if [ $FIRST_RUN == 0 ]; then
 		sleep 4
