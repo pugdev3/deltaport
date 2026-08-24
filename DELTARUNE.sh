@@ -77,7 +77,7 @@ function watch_game {
 
 function run_game {
 	# We need to set the locale to C (standard locale) because it uses a dot for decimals and GMS requires it.
-	LC_ALL=C "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND ./deltarune &
+	LC_ALL=C "$HOME/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh" $HIDE_INPUT_COMMAND gamemoderun ./deltarune &
 	# After the first run during the chapter switch, we want to wait a bit before killing the first one.
 	if [ $FIRST_RUN == 0 ]; then
 		sleep 4

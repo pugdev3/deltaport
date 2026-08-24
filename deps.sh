@@ -6,7 +6,7 @@ SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 FFMPEG4_INSTALLED=0
 FFMPEG_URL=""
 HDIFFPATCH_INSTALLED=0
-deps=("curl" "hpatchz" "inotifywait" "ffmpeg" "wget")
+deps=("curl" "hpatchz" "inotifywait" "ffmpeg" "wget" "gamemode")
 # Internal / to display on screen.
 missing_deps=()
 missing_deps_list=()
